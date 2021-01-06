@@ -1,1 +1,15 @@
 Write here everything about the project
+
+Features
+Pitch training, the program generates random notes and recognizes the notes that are being played on the MIDI and matches them, if the player doesn’t hit the right note, the program tells them what they have played and that it is the wrong note.
+Simple Rhythm recognition and training, the program needs to know when exactly each note in the bar is going to be played and give feedback to the player with a precision of 50ms or what the player selects.
+
+Modes:
+Pitch mode
+Rhythm mode
+Combined
+Chords mode
+Progression mode
+
+Future plans:
+Users can create their own Sheet and try to play it.
