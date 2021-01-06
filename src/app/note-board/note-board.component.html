@@ -1,0 +1,15 @@
+
+ 
+<img   src=  "/assets/sheet.jpg"  style="width: 1125px;height: 500px;" >
+<main>
+  
+   <app-rand
+        *ngFor="let val of note ; let i = index" 
+        [xvalue]="val"
+        [yvalue]="1050"
+        [xnum]="i"
+        > 
+
+    </app-rand>
+    
+</main>
