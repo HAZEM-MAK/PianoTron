@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 
 export class NoteBoardComponent implements OnInit {
  note: number[] = [47,75,103,131,159,187,215,9,9,9,0,6,4,8,9,5];
- notey: number[] = [47,75,103,131,159,187,215];
+ notey: number =14;
  notex: number =100;/* from 250 to 1050*/
  yind:number[]=[1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6];
  f: number=90;
@@ -24,7 +24,7 @@ export class NoteBoardComponent implements OnInit {
 
   ngOnInit(): void {
     for (let index = 0; index < this.note_counter+1; index++) {
-      this.ynum[index]=Math.floor(((6*10*Math.random()))/9);}
+      this.ynum[index]=Math.floor(((18*10*Math.random()))/9);}
      
    this.rand_generat();
   }
@@ -36,7 +36,7 @@ export class NoteBoardComponent implements OnInit {
     this.yblue=this.ynum[this.xblue];
     if (this.xblue>=this.note_counter) {
       for (let index = 0; index < this.note_counter+1; index++) {
-        this.ynum[index]=Math.floor(((6*10*Math.random()))/9);    
+        this.ynum[index]=Math.floor(((18*10*Math.random()))/9);    
       }   
       this.xblue=0; 
       this.yblue=this.ynum[this.xblue];
