@@ -59,7 +59,14 @@
     flex-direction: column;
     align-items: center;
   }
-
+  .board {
+    display: flex;
+  
+    max-height: 700px; 
+    max-width: 1200px;
+    flex-direction: column;
+    align-items: center;
+  }
   svg.material-icons {
     height: 24px;
     width: auto;

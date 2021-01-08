@@ -8,8 +8,12 @@ export class RandComponent  {
   @Input() xvalue :any;
   @Input() yvalue :any; 
   @Input() xblue:any
-  @Input() yblue: any; 
-  notey: number =14;//must add 60
+  @Input() yblue: any;
+ 
+  show:boolean=false;
+   dashes:number[]=[26,54,215,243,];
+   
+  notey: number =14;
  notex: number =50;/* from 250 to 1050*/
  
 }

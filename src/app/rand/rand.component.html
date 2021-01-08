@@ -1,2 +1,9 @@
 <h1 [ngStyle]="{'font-size':'60pt','position':'absolute','top':notey*yvalue+63+'px','left':(notex*xvalue+250)+'px','color':'black'}">♪</h1> 
 <h1 [ngStyle]="{'font-size':'60pt','position':'absolute','top':yblue*notey+63+'px','left':(notex*xblue+250)+'px','color':'blue'}">♪</h1> 
+<k *ngIf="yvalue<4" [ngStyle]="{'font-size':'23pt','position':'absolute','top':(dashes[1]+103)+'px','left':(notex*xvalue+245)+'px','color':'black'}">ــــــ</k>
+<k *ngIf="yvalue<2" [ngStyle]="{'font-size':'23pt','position':'absolute','top':(dashes[0]+103)+'px','left':(notex*xvalue+245)+'px','color':'black'}">ــــــ</k>
+
+<k *ngIf="yvalue>14" [ngStyle]="{'font-size':'23pt','position':'absolute','top':(dashes[2]+111)+'px','left':(notex*xvalue+245)+'px','color':'black'}">ــــــ</k>
+<k *ngIf="yvalue>16" [ngStyle]="{'font-size':'23pt','position':'absolute','top':(dashes[3]+111)+'px','left':(notex*xvalue+245)+'px','color':'black'}">ــــــ</k>
+
+

@@ -7,40 +7,47 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class NoteBoardComponent implements OnInit {
- note: number[] = [47,75,103,131,159,187,215,9,9,9,0,6,4,8,9,5];
+note_counter:number=16;
+ note: number[] = Array(this.note_counter);
  notey: number =14;
  notex: number =100;/* from 250 to 1050*/
- yind:number[]=[1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6];
  f: number=90;
  xblue:number=1;
  yblue:number=1;
  ynum:number[]=[];
+ generate_on:boolean=false;
  id:any;
  
- noteime:number =500;
+ noteime:number =200;
  boardtime:number=2000;
- note_counter:number=16;
+ 
   constructor() { }
 
   ngOnInit(): void {
     for (let index = 0; index < this.note_counter+1; index++) {
-      this.ynum[index]=Math.floor(((18*10*Math.random()))/9);}
-     
+      this.ynum[index]=Math.floor(((17*10*Math.random()))/9);}
+      this.xblue=0; 
+      this.yblue=this.ynum[this.xblue];
    this.rand_generat();
   }
   rand_generat()
   { 
     
     this.id=setInterval(()=>{
+      if(this.generate_on)
     this.xblue=this.xblue+1;
     this.yblue=this.ynum[this.xblue];
     if (this.xblue>=this.note_counter) {
       for (let index = 0; index < this.note_counter+1; index++) {
-        this.ynum[index]=Math.floor(((18*10*Math.random()))/9);    
+        this.ynum[index]=Math.floor(((17*10*Math.random()))/9);    
       }   
       this.xblue=0; 
       this.yblue=this.ynum[this.xblue];
     }},this.noteime)
   
+  }
+  generate()
+  {
+    this.generate_on=!this.generate_on;
   }
 }
