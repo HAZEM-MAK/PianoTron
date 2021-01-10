@@ -17,8 +17,9 @@ note_counter:number=16;
  ynum:number[]=[];
  generate_on:boolean=false;
  id:any;
- 
- noteime:number =200;
+ test:any=0;
+ speed:any=document.getElementById("speedm");
+ noteime:any =200;
  boardtime:number=2000;
  
   constructor() { }
@@ -39,7 +40,9 @@ note_counter:number=16;
     this.yblue=this.ynum[this.xblue];
     if (this.xblue>=this.note_counter) {
       for (let index = 0; index < this.note_counter+1; index++) {
-        this.ynum[index]=Math.floor(((17*10*Math.random()))/9);    
+        do{
+        this.ynum[index]=Math.floor(((17*10*Math.random()))/9);  
+        }while(Math.abs(this.ynum[index]-this.ynum[index-1])>5) 
       }   
       this.xblue=0; 
       this.yblue=this.ynum[this.xblue];
@@ -50,4 +53,8 @@ note_counter:number=16;
   {
     this.generate_on=!this.generate_on;
   }
+ 
+  g_speed()
+  {this.noteime=document.getElementById("speedm")
+  this.test=document.getElementById("speedm")?.getAttributeNames();}
 }

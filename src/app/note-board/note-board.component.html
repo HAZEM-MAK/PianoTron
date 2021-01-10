@@ -1,9 +1,12 @@
 
 
+
 <div class="board">
     <img   src=  "/assets/sheet.jpg"  style="width: 1125px;height: 500px;" >
-    <button [ngStyle]="{'position':'absolute','top':600+'px','left':900+'px'}"nbButton outline status="danger" (click)="generate()" >Start/Stop</button>
-
+    <button [ngStyle]="{'position':'absolute','top':600+'px','left':800+'px'}"nbButton outline status="danger" (click)="generate()" >Start/Stop</button>
+<input id="speedm" name="speedm" type="range"  value="100"  (input)="g_speed()" [ngStyle]="{'position':'absolute','top':600+'px','left':900+'px'}">
+{{noteime}}
+{{test}}
 </div>
 <main class="board" >
  
@@ -20,3 +23,4 @@
     </app-rand>
     
 </main>
+{{ynum}}
