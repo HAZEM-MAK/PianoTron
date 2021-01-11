@@ -1,18 +1,22 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RandComponent } from './rand/rand.component';
 import { NoteBoardComponent } from './note-board/note-board.component';
+import { MatSliderModule } from '@angular/material/slider';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
+
     AppComponent,
     RandComponent,
     NoteBoardComponent
   ],
   imports: [
+    FormsModule,
+    MatSliderModule,
     BrowserModule,
     AppRoutingModule
   ],
