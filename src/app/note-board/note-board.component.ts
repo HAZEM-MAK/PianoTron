@@ -19,8 +19,12 @@ note_counter:number=16;
  id:any;
  test:any=0;
  speed:any=document.getElementById("speedm");
- noteime:any =200;
+ noteime:number =2000;
+ smothness:number =5;
  boardtime:number=2000;
+ timecount:number=0;
+ time_res:number=100;
+ 
  
   constructor() { }
 
@@ -33,28 +37,30 @@ note_counter:number=16;
   }
   rand_generat()
   { 
-    
+ 
     this.id=setInterval(()=>{
-      if(this.generate_on)
+     this.timecount+=this.time_res;
+      if(this.generate_on && this.timecount>=this.noteime){
+        this.timecount=0;
     this.xblue=this.xblue+1;
     this.yblue=this.ynum[this.xblue];
     if (this.xblue>=this.note_counter) {
       for (let index = 0; index < this.note_counter+1; index++) {
         do{
         this.ynum[index]=Math.floor(((17*10*Math.random()))/9);  
-        }while(Math.abs(this.ynum[index]-this.ynum[index-1])>5) 
+        }while(Math.abs(this.ynum[index]-this.ynum[index-1])>this.smothness) 
       }   
       this.xblue=0; 
       this.yblue=this.ynum[this.xblue];
-    }},this.noteime)
+    }}},this.time_res)
   
   }
   generate()
-  {
+  {   
     this.generate_on=!this.generate_on;
   }
  
-  g_speed()
-  {this.noteime=document.getElementById("speedm")
-  this.test=document.getElementById("speedm")?.getAttributeNames();}
+  g_speed(speed:HTMLInputElement,smoth:HTMLInputElement)
+  {this.noteime=parseInt(speed.value);this.smothness=parseInt(smoth.value);}
+  
 }
