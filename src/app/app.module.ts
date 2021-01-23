@@ -4,8 +4,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RandComponent } from './rand/rand.component';
 import { NoteBoardComponent } from './note-board/note-board.component';
-import { MatSliderModule } from '@angular/material/slider';
-import { FormsModule } from '@angular/forms';
+//import { MatSliderModule } from '@angular/material/slider';
+//import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,8 +15,8 @@ import { FormsModule } from '@angular/forms';
     NoteBoardComponent
   ],
   imports: [
-    FormsModule,
-    MatSliderModule,
+    //FormsModule,
+    //MatSliderModule,
     BrowserModule,
     AppRoutingModule
   ],

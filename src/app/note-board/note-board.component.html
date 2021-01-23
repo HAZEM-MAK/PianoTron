@@ -1,16 +1,14 @@
 <div class="board">
-    <img   src=  "/assets/sheet.jpg"  style="width: 1125px;height: 500px;" >
-    <button [ngStyle]="{'position':'absolute','top':600+'px','left':800+'px'}"nbButton outline status="danger" (click)="generate()" >Start/Stop</button>
-<<<<<<< HEAD
-<input id="speedm"  #speed2 type="range" min="200" max="2000" value="1000"  (input)="g_speed(speed2,smoth)"  [ngStyle]="{'position':'absolute','top':600+'px','left':900+'px'}">
+    <div id="vf"></div>
+    <!-- <img   src=  "/assets/sheet.jpg"  style="width: 1125px;height: 500px;" > -->
+<button [ngStyle]="{'position':'absolute','top':600+'px','left':800+'px'}"nbButton outline status="danger" (click)="generate()" >Start/Stop</button>
+<input id="speedm"  #speed2 type="range" min="200" max="2000" value="2000"  (input)="g_speed(speed2,smoth)"  [ngStyle]="{'position':'absolute','top':600+'px','left':900+'px'}">
 <input id="smoth"  #smoth type="range" min="1" max="17" value="5"  (input)="g_speed(speed2,smoth)" [ngStyle]="{'position':'absolute','top':625+'px','left':900+'px'}">
-{{noteime}}
-{{test}}
-=======
-<mat-slider min="200" max="2000" step="200" [(ngModel)]="noteime"></mat-slider>
->>>>>>> 999d45c7c40c328177b6929b65b461e99eb1651c
+<p>speed= {{noteime}} ms/note</p>
+<p>smothness= {{smothness}}</p>
+<!-- <mat-slider min="200" max="2000" step="200" [(ngModel)]="noteime"></mat-slider> -->
 </div>
-<main class="board" >
+<!-- <main class="board" >
  
 <br>
  
@@ -25,6 +23,5 @@
     </app-rand>
     
 </main>
-{{ynum}}
+ -->
 
-<div id="vf"></div>
