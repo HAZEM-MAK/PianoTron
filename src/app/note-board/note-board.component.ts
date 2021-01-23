@@ -8,8 +8,9 @@ import * as VexJS from '../../assets/VexJavaScript.js';
   
 })
 export class NoteBoardComponent implements OnInit {
-note_counter=16;
-notes=["A","B","C","D","E","F","G","R","X"];
+note_counter=24;
+notes=["A/4","B/4","C/4","D/4","E/4","F/4","G/4","R/4","X/4"];
+vex_note:string[]=[];
  note: number[] = Array(this.note_counter);
  notey =14;
  notex =100;/* from 250 to 1050*/
@@ -30,17 +31,20 @@ notes=["A","B","C","D","E","F","G","R","X"];
  
 
  ngOnInit(){
-  VexJS.test(this.ynum);   
-
+  this.vexgenertat(true);
 }
  
   constructor() {
     
     for (let index = 0; index < this.note_counter+1; index++) {
-    this.ynum[index]=Math.floor(((8*10*Math.random()))/9);}
+    this.ynum[index]=Math.floor(((8*10*Math.random()))/9);
+  this.vex_note[index]=this.notes[this.ynum[index]];
+  }
     this.xblue=0; 
     this.yblue=this.ynum[this.xblue];
- this.rand_generat(); }
+ this.rand_generat();
+ 
+ }
 
   rand_generat()
   { 
@@ -56,17 +60,25 @@ notes=["A","B","C","D","E","F","G","R","X"];
         do{
         this.ynum[index]=Math.floor(((8*10*Math.random()))/9);  
         }while(Math.abs(this.ynum[index]-this.ynum[index-1])>this.smothness) 
+        this.vex_note[index]=this.notes[this.ynum[index]];
       }   
       this.xblue=0; 
       this.yblue=this.ynum[this.xblue];
+      this.vexgenertat(false);
     }}},this.time_res)
   
   }
   generate()
-  {  VexJS.test(this.ynum); 
+  {   
     this.generate_on=!this.generate_on;
   }
 
+  vexgenertat(on_int)
+  {
+    
+    VexJS.test(this.vex_note,on_int);
+  }
+  
   g_speed(speed:HTMLInputElement,smoth:HTMLInputElement)
   {this.noteime=parseInt(speed.value);this.smothness=parseInt(smoth.value);}
   

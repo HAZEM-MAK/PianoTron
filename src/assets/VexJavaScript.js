@@ -1,7 +1,7 @@
 import Vex from 'vexflow';
 
-export function test(){
-    var noted="a/4";
+export function test(ynote,on_int){
+  
 const VF = Vex.Flow;
 
 // Create an SVG renderer and attach it to the DIV element named "vf".
@@ -26,7 +26,7 @@ const stave8 = new VF.Stave(820, 125, 250);
 // Add a clef and time signature.
 stave1.addClef("treble").addTimeSignature("4/4");
 stave5.addClef("bass").addTimeSignature("4/4");
-
+if(on_int==true){
 // Connect it to the rendering context and draw!
 stave1.setContext(context).draw();
 stave2.setContext(context).draw();
@@ -36,41 +36,41 @@ stave5.setContext(context).draw();
 stave6.setContext(context).draw();
 stave7.setContext(context).draw();
 stave8.setContext(context).draw();
-
+}
 var notes1 =[
-    new VF.StaveNote({clef:"treble",keys:["a/4"],duration:"4"}),
-    new VF.StaveNote({clef:"treble",keys:["b/4"],duration:"4"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[0]],duration:"4"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[1]],duration:"4"}),
 
-    new VF.StaveNote({clef:"treble",keys:["c/4"],duration:"4"}),
-    new VF.StaveNote({clef:"treble",keys:["a/4"],duration:"4"}), ];   
+    new VF.StaveNote({clef:"treble",keys:[ynote[2]],duration:"4"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[3]],duration:"4"}), ];   
 var notes2 =[
-   new VF.StaveNote({clef:"treble",keys:["a/4"],duration:"16"}),
-    new VF.StaveNote({clef:"treble",keys:["d/4"],duration:"16"}),
-    new VF.StaveNote({clef:"treble",keys:["c/4"],duration:"8"}),
-    new VF.StaveNote({clef:"treble",keys:["e/4"],duration:"4"}) ,
+   new VF.StaveNote({clef:"treble",keys:[ynote[4]],duration:"16"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[5]],duration:"16"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[6]],duration:"8"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[7]],duration:"4"}) ,
 
-    new VF.StaveNote({clef:"treble",keys:["d/4"],duration:"4"}),
-    new VF.StaveNote({clef:"treble",keys:["d/4"],duration:"4"}), ];   
+    new VF.StaveNote({clef:"treble",keys:[ynote[8]],duration:"4"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[9]],duration:"4"}), ];   
 var notes3 =[
-    new VF.StaveNote({clef:"treble",keys:["e/4"],duration:"8"}),
-    new VF.StaveNote({clef:"treble",keys:["f/4"],duration:"8"}),
-    new VF.StaveNote({clef:"treble",keys:["b/4"],duration:"16"}),
-    new VF.StaveNote({clef:"treble",keys:["g/4"],duration:"8"}) ,
+    new VF.StaveNote({clef:"treble",keys:[ynote[10]],duration:"8"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[11]],duration:"8"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[12]],duration:"16"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[13]],duration:"8"}) ,
 
-    new VF.StaveNote({clef:"treble",keys:["a/4"],duration:"16"}),
-    new VF.StaveNote({clef:"treble",keys:["e/4"],duration:"16"}),
-    new VF.StaveNote({clef:"treble",keys:["e/4"],duration:"8"}),
-    new VF.StaveNote({clef:"treble",keys:["d/4"],duration:"16"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[14]],duration:"16"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[15]],duration:"16"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[16]],duration:"8"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[17]],duration:"16"}),
 
-    new VF.StaveNote({clef:"treble",keys:["d/4"],duration:"4"}),];  
+    new VF.StaveNote({clef:"treble",keys:[ynote[18]],duration:"4"}),];  
 var notes4 =[
-    new VF.StaveNote({clef:"treble",keys:["e/4"],duration:"16"}),
-    new VF.StaveNote({clef:"treble",keys:["b/4"],duration:"8"}),
-    new VF.StaveNote({clef:"treble",keys:["d/4"],duration:"4"}),
-    new VF.StaveNote({clef:"treble",keys:["d/4"],duration:"16"}) ,
+    new VF.StaveNote({clef:"treble",keys:[ynote[19]],duration:"16"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[20]],duration:"8"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[21]],duration:"4"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[22]],duration:"16"}) ,
 
-    new VF.StaveNote({clef:"treble",keys:["e/4"],duration:"4"}),
-    new VF.StaveNote({clef:"treble",keys:["a/4"],duration:"4"}), ];   
+    new VF.StaveNote({clef:"treble",keys:[ynote[23]],duration:"4"}),
+    new VF.StaveNote({clef:"treble",keys:[ynote[24]],duration:"4"}), ];   
 var notes5=[
     new VF.StaveNote({clef:"treble",keys:["b/4"],duration:"8"}),
     new VF.StaveNote({clef:"treble",keys:["e/4"],duration:"8"}),
