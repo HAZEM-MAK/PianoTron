@@ -10,6 +10,11 @@ import * as VexJS from '../../assets/VexJavaScript.js';
 export class NoteBoardComponent implements OnInit {
 note_counter=24;
 notes=["A/4","B/4","C/4","D/4","E/4","F/4","G/4","R/4","X/4"];
+notes_time=["1","2","4","8","16"];
+note_time=[1,0.5,0.25,0.125,0.0625];
+ytime:any[]=[];
+ytime_num=0;
+bar_time=0;
 vex_note:string[]=[];
  note: number[] = Array(this.note_counter);
  notey =14;
@@ -20,7 +25,7 @@ vex_note:string[]=[];
  ynum:number[]=[];
  generate_on:boolean=false;
  id:any;
-
+  i=0;
  speed:any=document.getElementById("speedm");
  noteime:number =2000;
  smothness:number =5;
@@ -31,7 +36,9 @@ vex_note:string[]=[];
  
 
  ngOnInit(){
+  this.bar_time_generater();
   this.vexgenertat(true);
+ 
 }
  
   constructor() {
@@ -46,6 +53,22 @@ vex_note:string[]=[];
  
  }
 
+ bar_time_generater()
+ {
+   for (let index = 0; index < 100; index++) {
+     this.ytime_num=Math.floor(((4*10*Math.random()))/9);
+     if(this.bar_time+this.note_time[this.ytime_num]<1)
+      {
+          
+       this.bar_time+=this.note_time[this.ytime_num];
+       this.ytime[this.i]=this.notes_time[this.ytime_num];
+       this.i++;
+      }
+
+    }
+    
+
+ }
   rand_generat()
   { 
  
