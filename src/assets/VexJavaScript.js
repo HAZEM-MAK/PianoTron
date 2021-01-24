@@ -5,7 +5,9 @@ export function test(ynote,on_int){
 const VF = Vex.Flow;
 
 // Create an SVG renderer and attach it to the DIV element named "vf".
+
 const div = document.getElementById("vf")
+div.innerHTML="";
 const renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
 
 // Configure the rendering context.
@@ -24,9 +26,10 @@ const stave6 = new VF.Stave(320, 125, 250);
 const stave7 = new VF.Stave(570, 125, 250);
 const stave8 = new VF.Stave(820, 125, 250);
 // Add a clef and time signature.
+
 stave1.addClef("treble").addTimeSignature("4/4");
 stave5.addClef("bass").addTimeSignature("4/4");
-if(on_int==true){
+
 // Connect it to the rendering context and draw!
 stave1.setContext(context).draw();
 stave2.setContext(context).draw();
@@ -36,7 +39,7 @@ stave5.setContext(context).draw();
 stave6.setContext(context).draw();
 stave7.setContext(context).draw();
 stave8.setContext(context).draw();
-}
+
 var notes1 =[
     new VF.StaveNote({clef:"treble",keys:[ynote[0]],duration:"4"}),
     new VF.StaveNote({clef:"treble",keys:[ynote[1]],duration:"4"}),
