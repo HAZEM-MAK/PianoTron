@@ -1,17 +1,22 @@
-<div class="board">
-    <div id="vf"></div>
+
+    <div [ngStyle]="{'position':'absolute','top':100+'px','left':200+'px'}" id="dau"></div>
+    <div [ngStyle]="{'position':'absolute','top':300+'px','left':200+'px'}" id="rau"></div>
     <!-- <img   src=  "/assets/sheet.jpg"  style="width: 1125px;height: 500px;" > -->
 <button [ngStyle]="{'position':'absolute','top':600+'px','left':800+'px'}"nbButton outline status="danger" (click)="generate()" >Start/Stop</button>
 <input id="speedm"  #speed2 type="range" min="200" max="2000" value="2000"  (input)="g_speed(speed2,smoth)"  [ngStyle]="{'position':'absolute','top':600+'px','left':900+'px'}">
 <input id="smoth"  #smoth type="range" min="1" max="17" value="5"  (input)="g_speed(speed2,smoth)" [ngStyle]="{'position':'absolute','top':625+'px','left':900+'px'}">
-<p>speed= {{noteime}} ms/note</p>
-<p>smothness= {{smothness}}</p>
+<p [ngStyle]="{'position':'absolute','top':600+'px','left':600+'px'}" >speed= {{noteime}} ms/note</p>
+<p [ngStyle]="{'position':'absolute','top':625+'px','left':600+'px'}">smothness= {{smothness}}</p>
 <!-- <mat-slider min="200" max="2000" step="200" [(ngModel)]="noteime"></mat-slider> -->
-</div>
+<div [ngStyle]="{'position':'absolute','top':700+'px','left':50+'px'}" class="board">
 {{xblue}}
+ff
 {{ytime_num}}
+ff
 {{ytime}}
-{{i}}
+ff
+{{number_of_bar_note}}
+</div>
 <!-- <main class="board" >
  
 <br>
