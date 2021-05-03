@@ -20,10 +20,13 @@ vex_note:string[]=[];
  notey =14;
  notex =100;/* from 250 to 1050*/
  f=90;
- xblue=1;
+ xblue=0;
+ xblue2=0;
  yblue=1;
  ynum:number[]=[];
  generate_on:boolean=false;
+ bar1_end=false;
+ bar2_end=false;
  id:any;
   i=0;
  speed:any=document.getElementById("speedm");
@@ -31,12 +34,13 @@ vex_note:string[]=[];
  smothness:number =5;
  boardtime:number=2000;
  timecount:number=0;
- time_res:number=100;
- 
+ timecount2:number=0;
+ time_res:number=300;
+ bar_number:number=0;
  
 
  ngOnInit(){
-
+ this.rand_generat();
   this.vexgenertat();
  
 }
@@ -84,17 +88,59 @@ vex_note:string[]=[];
 }
   rand_generat() {
 
-    this.id = setInterval(() => {
-      this.timecount += this.time_res;
-      if (this.generate_on && this.timecount >= this.noteime) {
-        this.timecount = 0;
-        this.xblue = this.xblue + 1;
-        this.yblue = this.ynum[this.xblue];
-        if (this.xblue >= this.note_counter) {
-          this.xblue = 0;
-          this.yblue = this.ynum[this.xblue];
-          this.vexgenertat();
+    this.id = setInterval(() => 
+    {
+      if (this.generate_on ){
+       this.timecount += this.time_res;
+       this.timecount2 += this.time_res;
+       
+       if((this.timecount >=1/parseInt(this.ytime[this.xblue+16*this.bar_number])*1000) )
+       {
+        dau_stave(this.vex_note,this.ytime,this.number_of_bar_note,this.bar_number,this.xblue,this.xblue2);
+         this.timecount = 0;
+         this.xblue = this.xblue + 1; 
+           if(this.xblue >= this.number_of_bar_note[this.bar_number])   
+           {
+             this.xblue--;
+             this.bar1_end=true;
+             
+
+           }
         }
+        // console.log("ytime = "+1/parseInt(this.ytime[this.xblue+16*(this.bar_number+4)])*1000+
+        // " xblue = "+this.xblue2+" bar = "+this.bar_number)
+        if(this.timecount2 >=1/parseInt(this.ytime[this.xblue2+16*(this.bar_number+4)])*1000 )
+       {
+        dau_stave(this.vex_note,this.ytime,this.number_of_bar_note,this.bar_number,this.xblue,this.xblue2);
+         this.timecount2 = 0;
+         this.xblue2 = this.xblue2 + 1; 
+         if(this.xblue2 >= this.number_of_bar_note[this.bar_number+4])   
+         {
+           this.xblue2--;
+           this.bar2_end=true;
+         }
+        }
+        if(this.bar2_end && this.bar1_end)
+        {
+          this.bar_number++;
+          this.bar2_end=false;
+          this.bar1_end=false;
+          this.xblue=0;
+          this.xblue2=0;
+          this.timecount2 = 0;
+          this.timecount = 0;
+        }
+        if(this.bar_number>3)
+            {
+            // this.generate_on=false;
+            this.bar2_end=false;
+            this.bar1_end=false;
+            this.xblue=0;
+            this.xblue2=0;
+            this.bar_number=0;
+            this.bars_generator();
+            dau_stave(this.vex_note,this.ytime,this.number_of_bar_note,0,0,0);
+            }
       }
     }, this.time_res)
 
@@ -105,9 +151,9 @@ vex_note:string[]=[];
 
   vexgenertat() {
      this.bars_generator();
-     dau_stave(this.vex_note,this.ytime,this.number_of_bar_note);
-     this.bars_generator();
-     rau_stave(this.vex_note,this.ytime,this.number_of_bar_note);
+     dau_stave(this.vex_note,this.ytime,this.number_of_bar_note,0,0,0);
+    //  this.bars_generator();
+    //  rau_stave(this.vex_note,this.ytime,this.number_of_bar_note);
   }
 
   g_speed(speed: HTMLInputElement, smoth: HTMLInputElement) {
@@ -126,7 +172,7 @@ const { Renderer, Stave, StaveNote, Voice, Formatter } = Flow;
 
 
 
-function dau_stave(ynote: string[], ynote_dur: string[],y_num: number[]) {
+function dau_stave(ynote: string[], ynote_dur: string[],y_num: number[],active_bar:number,blue_note:number,blue_note2:number) {
 
   //const VF = Vex.Flow;
 
@@ -140,10 +186,7 @@ function dau_stave(ynote: string[], ynote_dur: string[],y_num: number[]) {
   const context = renderer.getContext();
   
   context.setFont("Arial", 10).setBackgroundFillStyle("#eed");
-
-
     var stave1: Vex.Flow.Stave[]=[];
-    var stave2: Vex.Flow.Stave[]=[];
     var x=20,y=40,w=300;
    stave1[0] = new Stave(x, y, w);
    stave1[4] = new Stave(x, y+85, w);
@@ -152,7 +195,8 @@ function dau_stave(ynote: string[], ynote_dur: string[],y_num: number[]) {
    stave1[0].setContext(context).draw();
    stave1[4].setContext(context).draw();
   // Create a stave of width 400 at position 10, 40 on the canvas.
-  for (let index = 1; index < 8; index++) {
+  for (let index = 1; index < 8; index++) 
+  {
     x+=w;y=40;w=250;
     
     if(index<4)
@@ -175,22 +219,31 @@ function dau_stave(ynote: string[], ynote_dur: string[],y_num: number[]) {
    var bar7: Vex.Flow.StaveNote[]=[];
    var bar8: Vex.Flow.StaveNote[]=[];
   var dau_stave=[bar1,bar2,bar3,bar4,bar5,bar6,bar7,bar8];
-  for (let bar = 0; bar < 8; bar++) {
- for (let index = 0; index < y_num[bar]; index++) {
-   switch (bar)
-   {
-     case 0:  bar1[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
-     case 1:  bar2[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
-     case 2:  bar3[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
-     case 3:  bar4[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
-     case 4:  bar5[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
-     case 5:  bar6[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
-     case 6:  bar7[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
-     case 7:  bar8[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
-   }
-  } 
-}
-
+  for (let bar = 0; bar < 8; bar++)
+  {
+    for (let index = 0; index < y_num[bar]; index++)
+    {
+      switch (bar)
+      {
+        case 0:  bar1[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
+        case 1:  bar2[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
+        case 2:  bar3[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
+        case 3:  bar4[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
+        case 4:  bar5[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
+        case 5:  bar6[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
+        case 6:  bar7[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
+        case 7:  bar8[index]=new StaveNote({ clef: "treble", keys: [ynote[index+bar*16]], duration: ynote_dur[index+bar*16] }); break;
+      }
+    } 
+  }
+ 
+      switch(active_bar)
+      {
+        case 0:bar1[blue_note].setStyle({ fillStyle: "blue" });bar5[blue_note2].setStyle({ fillStyle: "blue" });break;
+        case 1:bar2[blue_note].setStyle({ fillStyle: "blue" });bar6[blue_note2].setStyle({ fillStyle: "blue" });break;
+        case 2:bar3[blue_note].setStyle({ fillStyle: "blue" });bar7[blue_note2].setStyle({ fillStyle: "blue" });break;
+        case 3:bar4[blue_note].setStyle({ fillStyle: "blue" });bar8[blue_note2].setStyle({ fillStyle: "blue" });break;
+      } 
   var voice1 :Vex.Flow.Voice[]=[];
   var voice2 :Vex.Flow.Voice[]=[];
   var voice3 :Vex.Flow.Voice[]=[];
@@ -201,14 +254,15 @@ function dau_stave(ynote: string[], ynote_dur: string[],y_num: number[]) {
   var voice8 :Vex.Flow.Voice[]=[];
   var voices=[voice1,voice2,voice3,voice4,voice5,voice6,voice7,voice8];
 
- for (let index = 0; index < voices.length; index++) {
+ for (let index = 0; index < voices.length; index++)
+  {
    voices[index] = [new Voice({ num_beats: dau_stave[index].length, beat_value: dau_stave[index].length }).addTickables(dau_stave[index])];
    var formatter1 = new Formatter().joinVoices(voices[index]).format(voices[index], 200);
    voices[index].forEach(function (v) { v.draw(context, stave1[index]); })
   }
-  // setTimeout(() => {
-  //   notes1[0].setStyle({ fillStyle: "red" });
-  //   voice1.forEach(function (v) { v.draw(context, stave1); })
+  //blue note
+     
+    //  voice1.forEach(function (v) { v.draw(context, stave1); })
     
   // }, 2000);
 }
