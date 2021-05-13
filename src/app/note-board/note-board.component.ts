@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-note-board',
   templateUrl: './note-board.component.html',
@@ -187,6 +188,7 @@ function dau_stave(ynote: string[], ynote_dur: string[],y_num: number[],active_b
   
   context.setFont("Arial", 10).setBackgroundFillStyle("#eed");
     var stave1: Vex.Flow.Stave[]=[];
+    var connect1: Vex.Flow.StaveConnector;
     var x=20,y=40,w=300;
    stave1[0] = new Stave(x, y, w);
    stave1[4] = new Stave(x, y+85, w);
@@ -194,6 +196,10 @@ function dau_stave(ynote: string[], ynote_dur: string[],y_num: number[],active_b
    stave1[4].addClef("bass").addTimeSignature("4/4");
    stave1[0].setContext(context).draw();
    stave1[4].setContext(context).draw();
+   connect1=new Vex.Flow.StaveConnector(stave1[0],stave1[4]);
+   connect1.setContext(context);
+   connect1.setType(Vex.Flow.StaveConnector.type.SINGLE_LEFT);
+   connect1.draw();
   // Create a stave of width 400 at position 10, 40 on the canvas.
   for (let index = 1; index < 8; index++) 
   {
