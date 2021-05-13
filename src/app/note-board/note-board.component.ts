@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, HostListener} from '@angular/core';
+// import {Component,HostListener,Directive,HostBinding,Input} from '@angular/core';
 
 @Component({
   selector: 'app-note-board',
@@ -41,6 +41,8 @@ vex_note:string[]=[];
  
 
  ngOnInit(){
+  dau_init();
+  stave_draw();
  this.rand_generat();
   this.vexgenertat();
  
@@ -57,6 +59,14 @@ vex_note:string[]=[];
   //   this.rand_generat();
 
   }
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+   
+      // Your row selection code
+      console.log(event.key);
+    
+  }
+
 
  bars_generator()
  {
@@ -140,6 +150,7 @@ vex_note:string[]=[];
             this.xblue2=0;
             this.bar_number=0;
             this.bars_generator();
+            dau_erase();
             dau_stave(this.vex_note,this.ytime,this.number_of_bar_note,0,0,0);
             }
       }
@@ -149,7 +160,6 @@ vex_note:string[]=[];
   generate() {
     this.generate_on = !this.generate_on;
   }
-
   vexgenertat() {
      this.bars_generator();
      dau_stave(this.vex_note,this.ytime,this.number_of_bar_note,0,0,0);
@@ -167,10 +177,57 @@ vex_note:string[]=[];
 
 
 
+  
+
+
 import Vex from 'vexflow';
 const Flow = Vex.Flow;
 const { Renderer, Stave, StaveNote, Voice, Formatter } = Flow;
+var  div, renderer, context
+var stave1 =new Array()
 
+function dau_init()
+{
+  div = document.getElementById("dau") as HTMLElement;
+  renderer = new Renderer(div, Renderer.Backends.SVG); 
+  context = renderer.getContext();
+  renderer.resize(1100, 250);
+  context.setFont("Arial", 10).setBackgroundFillStyle("#eed");
+}
+function stave_draw()
+{ 
+    var connect1: Vex.Flow.StaveConnector;
+    var x=20,y=40,w=300;
+  stave1[0] = new Stave(x, y, w);
+  stave1[4] = new Stave(x, y+85, w);
+  stave1[0].addClef("treble").addTimeSignature("4/4");
+  stave1[4].addClef("bass").addTimeSignature("4/4");
+  connect1=new Vex.Flow.StaveConnector(stave1[0],stave1[4]);
+  connect1.setType(Vex.Flow.StaveConnector.type.SINGLE_LEFT);
+  stave1[0].setContext(context).draw();
+  stave1[4].setContext(context).draw();
+  connect1.setContext(context).draw();   
+
+  for (let index = 1; index < 8; index++) 
+  {
+    x+=w;y=40;w=250;
+    if(index<4)
+      stave1[index] = new Stave(x, y, w);
+    else if(index==4)
+      x=70;
+    else
+      stave1[index] = new Stave(x, y+85, w);
+      stave1[index].setContext(context).draw();     
+  }
+}
+
+
+function dau_erase()
+{ 
+  div.innerHTML = "";
+  dau_init();
+  stave_draw();
+}
 
 
 function dau_stave(ynote: string[], ynote_dur: string[],y_num: number[],active_bar:number,blue_note:number,blue_note2:number) {
@@ -178,44 +235,6 @@ function dau_stave(ynote: string[], ynote_dur: string[],y_num: number[],active_b
   //const VF = Vex.Flow;
 
   // Create an SVG renderer and attach it to the DIV element named "vf".
-
-  const div = document.getElementById("dau") as HTMLElement
-  div.innerHTML = "";
-  
-  const renderer = new Renderer(div, Renderer.Backends.SVG);
-  renderer.resize(1100, 250);
-  const context = renderer.getContext();
-  
-  context.setFont("Arial", 10).setBackgroundFillStyle("#eed");
-    var stave1: Vex.Flow.Stave[]=[];
-    var connect1: Vex.Flow.StaveConnector;
-    var x=20,y=40,w=300;
-   stave1[0] = new Stave(x, y, w);
-   stave1[4] = new Stave(x, y+85, w);
-   stave1[0].addClef("treble").addTimeSignature("4/4");
-   stave1[4].addClef("bass").addTimeSignature("4/4");
-   stave1[0].setContext(context).draw();
-   stave1[4].setContext(context).draw();
-   connect1=new Vex.Flow.StaveConnector(stave1[0],stave1[4]);
-   connect1.setContext(context);
-   connect1.setType(Vex.Flow.StaveConnector.type.SINGLE_LEFT);
-   connect1.draw();
-  // Create a stave of width 400 at position 10, 40 on the canvas.
-  for (let index = 1; index < 8; index++) 
-  {
-    x+=w;y=40;w=250;
-    
-    if(index<4)
-    stave1[index] = new Stave(x, y, w);
-    else if(index==4)
-    x=70;
-    else
-    stave1[index] = new Stave(x, y+85, w);
-
-    stave1[index].setContext(context).draw();
-        
-  }
-   
    var bar1: Vex.Flow.StaveNote[]=[];
    var bar2: Vex.Flow.StaveNote[]=[];
    var bar3: Vex.Flow.StaveNote[]=[];
