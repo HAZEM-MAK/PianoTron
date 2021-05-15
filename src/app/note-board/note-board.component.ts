@@ -31,7 +31,7 @@ vex_note:string[]=[];
  id:any;
   i=0;
  speed:any=document.getElementById("speedm");
- noteime:number =2000;
+ noteime:number =72;
  smothness:number =5;
  boardtime:number=2000;
  timecount:number=0;
@@ -112,7 +112,7 @@ vex_note:string[]=[];
       {
         this.timecount += this.time_res;
         this.timecount2 += this.time_res;
-        if(this.timecount >=(1/parseInt(this.ytime[this.xblue+16*this.bar_number])*10) * this.noteime )
+        if(this.timecount >=((1/parseInt(this.ytime[this.xblue+16*this.bar_number]))*240000) / this.noteime )
         {
           dau_notes(this.vex_note,this.ytime,this.number_of_bar_note,this.bar_number,this.xblue,this.xblue2);
           console.log("1= "+this.timecount)
@@ -125,7 +125,7 @@ vex_note:string[]=[];
             this.bar1_end=true;
           }
         }
-        if(this.timecount2 >=(1/parseInt(this.ytime[this.xblue2+16*(this.bar_number+4)])*10)* this.noteime  )
+        if(this.timecount2 >=(1/parseInt(this.ytime[this.xblue2+16*(this.bar_number+4)]))*240000 / this.noteime  )
         {
           dau_notes(this.vex_note,this.ytime,this.number_of_bar_note,this.bar_number,this.xblue,this.xblue2);
           console.log("2= "+this.timecount2) 
