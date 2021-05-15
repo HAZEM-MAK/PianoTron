@@ -36,20 +36,25 @@ vex_note:string[]=[];
  boardtime:number=2000;
  timecount:number=0;
  timecount2:number=0;
- time_res:number=300;
+ time_res:number=50;
  bar_number:number=0;
+ w_buttons:any[]=Array(17);
+ b_buttons:any[]=Array(17);
+ start_stop:string="Start"
  
-
- ngOnInit(){
+ 
+ ngOnInit()
+ {
+  
   dau_init();
   stave_draw();
- this.rand_generat();
+  this.rand_generat();
   this.vexgenertat();
  
 }
  
-  constructor() {
-
+  constructor()
+  {
   //   for (let index = 0; index < this.note_counter + 1; index++) {
   //     this.ynum[index] = Math.floor(((8 * 10 * Math.random())) / 9);
   //     this.vex_note[index] = this.notes[this.ynum[index]];
@@ -57,14 +62,11 @@ vex_note:string[]=[];
   //   this.xblue = 0;
   //   this.yblue = this.ynum[this.xblue];
   //   this.rand_generat();
-
   }
   @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
-   
-      // Your row selection code
-      console.log(event.key);
-    
+  keyEvent(event: KeyboardEvent) 
+  {
+      console.log(event.key);  
   }
 
 
@@ -74,65 +76,68 @@ vex_note:string[]=[];
    this.number_of_bar_note=Array(8).fill(null);
    this.ytime=Array(128).fill(null);
  // bar_time_generater
-   for (let bar = 0; bar < 8; bar++) {
-    this.bar_time=0;
-    for (let index = 0; index < 1000; index++) 
-    {
-      this.ytime_num=Math.floor(((4*10*Math.random()))/9);
-      if(this.bar_time+this.note_time[this.ytime_num]<=1)
-        {   
-        this.bar_time+=this.note_time[this.ytime_num];
-        this.ytime[this.number_of_bar_note[bar]+bar*16]=this.notes_time[this.ytime_num];
-        this.number_of_bar_note[bar]++;
-        if ( this.bar_time ==1)
-        break;
-        }
-    }
-    //bar_note_generat
-    for (let index = 0; index < this.number_of_bar_note[bar] ; index++) {
-      do {
-        this.ynum[index] = Math.floor(((8 * 10 * Math.random())) / 9);
-      } while (Math.abs(this.ynum[index] - this.ynum[index - 1]) > this.smothness)
-      this.vex_note[index+bar*16] = this.notes[this.ynum[index]];
-    } 
+   for (let bar = 0; bar < 8; bar++) 
+   {
+      this.bar_time=0;
+      for (let index = 0; index < 1000; index++) 
+      {
+        this.ytime_num=Math.floor(((4*10*Math.random()))/9);
+        if(this.bar_time+this.note_time[this.ytime_num]<=1)
+          {   
+            this.bar_time+=this.note_time[this.ytime_num];
+            this.ytime[this.number_of_bar_note[bar]+bar*16]=this.notes_time[this.ytime_num];
+            this.number_of_bar_note[bar]++;
+            if ( this.bar_time ==1)
+            break;
+          }
+      }
+      //bar_note_generat
+      for (let index = 0; index < this.number_of_bar_note[bar] ; index++) 
+      {
+          do
+          {
+            this.ynum[index] = Math.floor(((8 * 10 * Math.random())) / 9);
+          } while (Math.abs(this.ynum[index] - this.ynum[index - 1]) > this.smothness)
+          this.vex_note[index+bar*16] = this.notes[this.ynum[index]];
+      } 
   }
 }
-  rand_generat() {
-
+ rand_generat()
+ {
     this.id = setInterval(() => 
     {
-      if (this.generate_on ){
-       this.timecount += this.time_res;
-       this.timecount2 += this.time_res;
-       
-       if((this.timecount >=1/parseInt(this.ytime[this.xblue+16*this.bar_number])*1000) )
-       {
-        dau_stave(this.vex_note,this.ytime,this.number_of_bar_note,this.bar_number,this.xblue,this.xblue2);
-         this.timecount = 0;
-         this.xblue = this.xblue + 1; 
-           if(this.xblue >= this.number_of_bar_note[this.bar_number])   
-           {
-             this.xblue--;
-             this.bar1_end=true;
-             
+      if (this.generate_on )
+      {
+        this.timecount += this.time_res;
+        this.timecount2 += this.time_res;
+        if((this.timecount >=1/parseInt(this.ytime[this.xblue+16*this.bar_number])*1000) )
+        {
+          dau_notes(this.vex_note,this.ytime,this.number_of_bar_note,this.bar_number,this.xblue,this.xblue2);
+          console.log("1= "+this.timecount)
+          this.timecount = 0;
+          this.xblue = this.xblue + 1; 
 
-           }
+          if(this.xblue >= this.number_of_bar_note[this.bar_number])   
+          {
+            this.xblue--;
+            this.bar1_end=true;
+          }
         }
-        // console.log("ytime = "+1/parseInt(this.ytime[this.xblue+16*(this.bar_number+4)])*1000+
-        // " xblue = "+this.xblue2+" bar = "+this.bar_number)
         if(this.timecount2 >=1/parseInt(this.ytime[this.xblue2+16*(this.bar_number+4)])*1000 )
-       {
-        dau_stave(this.vex_note,this.ytime,this.number_of_bar_note,this.bar_number,this.xblue,this.xblue2);
-         this.timecount2 = 0;
-         this.xblue2 = this.xblue2 + 1; 
-         if(this.xblue2 >= this.number_of_bar_note[this.bar_number+4])   
-         {
-           this.xblue2--;
-           this.bar2_end=true;
-         }
+        {
+          dau_notes(this.vex_note,this.ytime,this.number_of_bar_note,this.bar_number,this.xblue,this.xblue2);
+          console.log("2= "+this.timecount2) 
+          this.timecount2 = 0;
+          this.xblue2 = this.xblue2 + 1; 
+        if(this.xblue2 >= this.number_of_bar_note[this.bar_number+4])   
+        {
+          this.xblue2--;
+          this.bar2_end=true;
+        }
         }
         if(this.bar2_end && this.bar1_end)
         {
+          console.log("bar end") 
           this.bar_number++;
           this.bar2_end=false;
           this.bar1_end=false;
@@ -142,36 +147,60 @@ vex_note:string[]=[];
           this.timecount = 0;
         }
         if(this.bar_number>3)
-            {
-            // this.generate_on=false;
-            this.bar2_end=false;
-            this.bar1_end=false;
-            this.xblue=0;
-            this.xblue2=0;
-            this.bar_number=0;
-            this.bars_generator();
-            dau_erase();
-            dau_stave(this.vex_note,this.ytime,this.number_of_bar_note,0,0,0);
-            }
+        {
+          // this.generate_on=false;
+          this.bar2_end=false;
+          this.bar1_end=false;
+          this.xblue=0;
+          this.xblue2=0;
+          this.bar_number=0;
+          this.bars_generator();
+          dau_erase();
+          dau_notes(this.vex_note,this.ytime,this.number_of_bar_note,0,0,0);
+        }
       }
     }, this.time_res)
 
   }
-  generate() {
+  generate() 
+  {
     this.generate_on = !this.generate_on;
+    if (this.generate_on)
+    {
+    this.start_stop="Stop"
+    }
+    else
+    {
+    this.start_stop="Start"
+    }
   }
-  vexgenertat() {
-     this.bars_generator();
-     dau_stave(this.vex_note,this.ytime,this.number_of_bar_note,0,0,0);
+  vexgenertat()
+  {
+    this.bars_generator();
+    dau_notes(this.vex_note,this.ytime,this.number_of_bar_note,0,0,0);
     //  this.bars_generator();
     //  rau_stave(this.vex_note,this.ytime,this.number_of_bar_note);
   }
-
-  g_speed(speed: HTMLInputElement, smoth: HTMLInputElement) {
+  whit_button(button :number)
+  {
+    console.log(button)
+  }
+  black_button(button :number)
+  {
+    console.log(button)
+  }
+  g_speed(speed: HTMLInputElement, smoth: HTMLInputElement) 
+  {
     this.noteime = parseInt(speed.value);
     this.smothness = parseInt(smoth.value);
   }
-
+  playAudio()
+  {
+    let audio = new Audio();
+    audio.src = "../../../assets/audio/alarm.wav";
+    audio.load();
+    audio.play();
+  }
 }
 
 
@@ -230,9 +259,7 @@ function dau_erase()
 }
 
 
-function dau_stave(ynote: string[], ynote_dur: string[],y_num: number[],active_bar:number,blue_note:number,blue_note2:number) {
-
-  //const VF = Vex.Flow;
+function dau_notes(ynote: string[], ynote_dur: string[],y_num: number[],active_bar:number,blue_note:number,blue_note2:number) {
 
   // Create an SVG renderer and attach it to the DIV element named "vf".
    var bar1: Vex.Flow.StaveNote[]=[];
@@ -243,7 +270,8 @@ function dau_stave(ynote: string[], ynote_dur: string[],y_num: number[],active_b
    var bar6: Vex.Flow.StaveNote[]=[];
    var bar7: Vex.Flow.StaveNote[]=[];
    var bar8: Vex.Flow.StaveNote[]=[];
-  var dau_stave=[bar1,bar2,bar3,bar4,bar5,bar6,bar7,bar8];
+   var dau_stave=[bar1,bar2,bar3,bar4,bar5,bar6,bar7,bar8];
+
   for (let bar = 0; bar < 8; bar++)
   {
     for (let index = 0; index < y_num[bar]; index++)
@@ -262,13 +290,14 @@ function dau_stave(ynote: string[], ynote_dur: string[],y_num: number[],active_b
     } 
   }
  
-      switch(active_bar)
-      {
-        case 0:bar1[blue_note].setStyle({ fillStyle: "blue" });bar5[blue_note2].setStyle({ fillStyle: "blue" });break;
-        case 1:bar2[blue_note].setStyle({ fillStyle: "blue" });bar6[blue_note2].setStyle({ fillStyle: "blue" });break;
-        case 2:bar3[blue_note].setStyle({ fillStyle: "blue" });bar7[blue_note2].setStyle({ fillStyle: "blue" });break;
-        case 3:bar4[blue_note].setStyle({ fillStyle: "blue" });bar8[blue_note2].setStyle({ fillStyle: "blue" });break;
-      } 
+  switch(active_bar)
+  {
+    case 0:bar1[blue_note].setStyle({ fillStyle: "blue" });bar5[blue_note2].setStyle({ fillStyle: "blue" });break;
+    case 1:bar2[blue_note].setStyle({ fillStyle: "blue" });bar6[blue_note2].setStyle({ fillStyle: "blue" });break;
+    case 2:bar3[blue_note].setStyle({ fillStyle: "blue" });bar7[blue_note2].setStyle({ fillStyle: "blue" });break;
+    case 3:bar4[blue_note].setStyle({ fillStyle: "blue" });bar8[blue_note2].setStyle({ fillStyle: "blue" });break;
+  } 
+
   var voice1 :Vex.Flow.Voice[]=[];
   var voice2 :Vex.Flow.Voice[]=[];
   var voice3 :Vex.Flow.Voice[]=[];
@@ -285,11 +314,6 @@ function dau_stave(ynote: string[], ynote_dur: string[],y_num: number[],active_b
    var formatter1 = new Formatter().joinVoices(voices[index]).format(voices[index], 200);
    voices[index].forEach(function (v) { v.draw(context, stave1[index]); })
   }
-  //blue note
-     
-    //  voice1.forEach(function (v) { v.draw(context, stave1); })
-    
-  // }, 2000);
 }
 
 
