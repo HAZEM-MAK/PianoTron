@@ -24,6 +24,7 @@
     "git": "^0.1.5",
     "osmd-audio-player": "^0.6.4",
     "rxjs": "~6.6.0",
+    "soundfont-player": "^0.12.0",
     "tslib": "^2.0.0",
     "vexflow": "^3.0.9",
     "zone.js": "~0.10.2"
