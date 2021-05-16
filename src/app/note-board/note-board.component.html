@@ -8,11 +8,11 @@
    
     <div  id="dau"></div>
     <div  *ngFor="let val of w_buttons ; let i = index"  >
-        <button  [ngStyle]="{'position':'absolute','top':325+'px','left':30+(60*i)+'px'}" (mousedown)="whit_button_down(i)" (mouseup)="whit_button_up(i)" style="width: 60px;height: 200px;border-radius: 12px;"  ></button>
+        <button [ngClass]="{'white' : !w_buttons[i], 'gray': w_buttons[i]}" [ngStyle]="{'position':'absolute','top':325+'px','left':30+(60*i)+'px'}" (mousedown)="whit_button_down(i)" (mouseup)="whit_button_up(i)" style="width: 60px;height: 200px;border-radius: 12px;"  ></button>
     </div>
     <div *ngFor="let val of b_buttons ; let v = index"  >
         <div *ngIf="v==0 || v==2 || v==3 || v==5 || v==6 || v==7 || v==9 || v==10 || v==12 || v==13 || v==14">
-            <button [ngStyle]="{'position':'absolute','top':325+'px','left':70+(60*v)+'px'}" (mousedown)="black_button_down(v)" (mouseup)="black_button_up(v)" style="width: 40px;height: 120px;border-radius: 10px;background-color: black;"  ></button>
+            <button [ngClass]="{'black' : !b_buttons[v], 'lightblack': b_buttons[v]}"  [ngStyle]="{'position':'absolute','top':325+'px','left':70+(60*v)+'px'}" (mousedown)="black_button_down(v)" (mouseup)="black_button_up(v)" style="width: 40px;height: 120px;border-radius: 10px;"  ></button>
         </div> 
     </div>
     <input id="speedm"  #speed2 type="range" min="1" max="200" value="72"  (input)="g_speed(speed2,smoth)"  [ngStyle]="{'position':'absolute','top':250+'px','left':900+'px'}">
@@ -21,7 +21,7 @@
     <p [ngStyle]="{'position':'absolute','top':250+'px','left':500+'px'}" >speed= {{noteime}} npm</p>
     <p [ngStyle]="{'position':'absolute','top':300+'px','left':500+'px'}">smothness= {{smothness}}</p>
 
-    <button id="Start/Stop" [ngStyle]="{'position':'absolute','top':260+'px','left':800+'px'}" (click)="generate()" style="width: 60px;height: 40px;border-radius: 10px;" >{{start_stop}}</button>
+    <button id="Start/Stop" [ngClass]="{'green' : !generate_on, 'red': generate_on}" [ngStyle]="{'position':'absolute','top':260+'px','left':800+'px'}" (click)="generate()" style="width: 60px;height: 40px;border-radius: 10px;" >{{start_stop}}</button>
 </div>
 <!-- (mousedown)="mousedown()" (mouseup)="mouseup()" (mouseleave)="mouseup()" -->
 

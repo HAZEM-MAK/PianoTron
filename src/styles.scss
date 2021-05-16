@@ -20,7 +20,25 @@
   p {
     margin: 0;
   }
+  .green {
+    background-color: lawngreen;
+  }
 
+  .red {
+    background-color: red;
+  }
+  .white {
+    background-color: white;
+  }
+  .black {
+    background-color: black;
+  }
+  .lightblack {
+    background-color: rgb(48, 48, 48);
+  }
+  .gray {
+    background-color: rgb(233, 233, 233);
+  }
   .spacer {
     flex: 1;
   }

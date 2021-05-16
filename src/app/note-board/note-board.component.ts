@@ -168,25 +168,32 @@ export class NoteBoardComponent implements OnInit {
     //  this.bars_generator();
     //  rau_stave(this.vex_note,this.ytime,this.number_of_bar_note);
   }
+
+
   whit_button_down(button :number)
   {
+    this.w_buttons[button]=1;
     this.playnote(this.notes_play[button]);
     single_note(this.notes[button]);
     this.down_time=performance.now()
     console.log("white number : "+button)
   }
+
+
   whit_button_up(button: number) {
-    
+    this.w_buttons[button]=0;
     single_note_eraser();
     this.up_time = performance.now()
     this.total_time = this.up_time - this.down_time
     console.log("white number : " + button + " time= " + this.total_time)
   }
   black_button_down(button: number) {
+    this.b_buttons[button]=1;
     this.down_time = performance.now()
     console.log("black number : " + button)
   }
   black_button_up(button: number) {
+    this.b_buttons[button]=0;
     this.up_time = performance.now()
     this.total_time = this.up_time - this.down_time
     console.log("black number : " + button + " time= " + this.total_time)
