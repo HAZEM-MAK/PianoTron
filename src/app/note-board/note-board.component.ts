@@ -36,7 +36,7 @@ vex_note:string[]=[];
  boardtime:number=2000;
  timecount:number=0;
  timecount2:number=0;
- time_res:number=50;
+ time_res:number=10;
  bar_number:number=0;
  w_buttons:any[]=Array(17);
  b_buttons:any[]=Array(17);
@@ -185,6 +185,7 @@ vex_note:string[]=[];
   }
   whit_button_down(button :number)
   {
+    single_note(this.notes[button]);
     this.down_time=performance.now()
     console.log("white number : "+button)
   }
@@ -228,7 +229,7 @@ vex_note:string[]=[];
 import Vex from 'vexflow';
 const Flow = Vex.Flow;
 const { Renderer, Stave, StaveNote, Voice, Formatter } = Flow;
-var  div, renderer, context
+var  div, renderer, context,context2
 var stave1 =new Array()
 
 function dau_init()
@@ -265,8 +266,6 @@ function stave_draw()
       stave1[index].setContext(context).draw();     
   }
 }
-
-
 function dau_erase()
 { 
   div.innerHTML = "";
@@ -274,6 +273,32 @@ function dau_erase()
   stave_draw();
 }
 
+function single_note(note:string) {
+
+  // Create an SVG renderer and attach it to the DIV element named "vf".
+ 
+  
+   context2 = renderer.getContext();
+    var bar1: Vex.Flow.StaveNote[]=[];
+    var single_stave = new Stave(20, 40, 300);
+    single_stave.addClef("treble").addTimeSignature("4/4");
+    bar1[0]=new StaveNote({ clef: "treble", keys: [note], duration: "1" });
+       
+
+    bar1[0].setStyle({ fillStyle: "red" });
+    
+    var voice1 :Vex.Flow.Voice[]=[];
+
+   voice1 = [new Voice({ num_beats: bar1.length, beat_value: bar1.length }).addTickables(bar1)];
+   var formatter1 = new Formatter().joinVoices(voice1).format(voice1, 200);
+   voice1.forEach(function (v) { v.draw(context2, single_stave); })
+  
+}
+
+function single_note_eraser()
+{
+  
+}
 
 function dau_notes(ynote: string[], ynote_dur: string[],y_num: number[],active_bar:number,blue_note:number,blue_note2:number) {
 
