@@ -12,7 +12,9 @@ import SoundFont from 'soundfont-player'
 export class NoteBoardComponent implements OnInit {
   note_counter = 24;
   notes = ["A/4", "B/4", "C/4", "D/4", "E/4", "F/4", "G/4", "R/4", "X/4"];
+  notes_play = ["A4", "B4", "C4", "D4", "E4", "F4", "G4", "C5", "X4"];
   notes_time = ["1", "2", "4", "8", "16"];
+
   note_time = [1, 0.5, 0.25, 0.125, 0.0625];
   ytime: string[] = [];
   ytime_num = 0;
@@ -168,11 +170,13 @@ export class NoteBoardComponent implements OnInit {
   }
   whit_button_down(button :number)
   {
+    this.playnote(this.notes_play[button]);
     single_note(this.notes[button]);
     this.down_time=performance.now()
     console.log("white number : "+button)
   }
   whit_button_up(button: number) {
+    
     single_note_eraser();
     this.up_time = performance.now()
     this.total_time = this.up_time - this.down_time
