@@ -12,7 +12,7 @@ var ac = new AudioContext()
 export class NoteBoardComponent implements OnInit {
   note_counter = 24;
   notes = ["A/4", "B/4", "C/4", "D/4", "E/4", "F/4", "G/4", "R/4", "X/4"];
-  notes_play = ["A4", "B4", "C4", "D4", "E4", "F4", "G4", "C5"];
+  notes_play = ["A4", "B4", "C4", "D4", "E4", "F4", "G4", "C5","A4"];
   notes_time = ["1", "2", "4", "8", "16"];
   
   note_time = [1, 0.5, 0.25, 0.125, 0.0625];
@@ -21,6 +21,7 @@ export class NoteBoardComponent implements OnInit {
   bar_time = 0;
   number_of_bar_note: number[] = [0, 0, 0, 0, 0, 0, 0, 0];
   vex_note: string[] = [];
+  pleyer_note: string[] = [];
   note: number[] = Array(this.note_counter);
   notey = 14;
   notex = 100;/* from 250 to 1050*/
@@ -48,7 +49,8 @@ export class NoteBoardComponent implements OnInit {
   down_time: number = 0
   up_time: number = 0
   total_time: number = 0
-
+  note_player_index :number =0
+  lock:boolean=false;
   ngOnInit() {
 
     dau_init();
@@ -68,12 +70,42 @@ export class NoteBoardComponent implements OnInit {
     //   this.yblue = this.ynum[this.xblue];
     //   this.rand_generat();
   }
-  @HostListener('window:keyup', ['$event'])
+  @HostListener('window:keydown', ['$event'])
   keyEvent(event: KeyboardEvent) {
+    if (this.lock==false)
+    {
+    switch(event.key)
+    {
+      case 'a':this.whit_button_down(0);this.lock=true;break;
+      case 's':this.whit_button_down(1);this.lock=true;break;
+      case 'd':this.whit_button_down(2);this.lock=true;break;
+      case 'f':this.whit_button_down(3);this.lock=true;break;
+      case 'g':this.whit_button_down(4);this.lock=true;break;
+      case 'h':this.whit_button_down(5);this.lock=true;break;
+      case 'j':this.whit_button_down(6);this.lock=true;break;
+      case 'k':this.whit_button_down(7);this.lock=true;break;
+      case 'l':this.whit_button_down(8);this.lock=true;break;
+    }
     console.log(event.key);
+    }
   }
 
-
+  @HostListener('window:keyup', ['$event'])
+  keyEventup(event: KeyboardEvent) {
+    switch(event.key)
+    {
+      case 'a':this.whit_button_up(0);this.lock=false;break;
+      case 's':this.whit_button_up(1);this.lock=false;break;
+      case 'd':this.whit_button_up(2);this.lock=false;break;
+      case 'f':this.whit_button_up(3);this.lock=false;break;
+      case 'g':this.whit_button_up(4);this.lock=false;break;
+      case 'h':this.whit_button_up(5);this.lock=false;break;
+      case 'j':this.whit_button_up(6);this.lock=false;break;
+      case 'k':this.whit_button_up(7);this.lock=false;break;
+      case 'l':this.whit_button_up(8);this.lock=false;break;
+    }
+    console.log(event.key);
+  }
   bars_generator() {
     this.vex_note = Array(128).fill(null);
     this.number_of_bar_note = Array(8).fill(null);
@@ -97,6 +129,7 @@ export class NoteBoardComponent implements OnInit {
           this.ynum[index] = Math.floor(((8 * 10 * Math.random())) / 9);
         } while (Math.abs(this.ynum[index] - this.ynum[index - 1]) > this.smothness)
         this.vex_note[index + bar * 16] = this.notes[this.ynum[index]];
+        this.pleyer_note[index + bar * 16] = this.notes_play[this.ynum[index]];
       }
     }
   }
@@ -108,16 +141,20 @@ export class NoteBoardComponent implements OnInit {
         if (this.timecount >= ((1 / parseInt(this.ytime[this.xblue + 16 * this.bar_number])) * 240000) / this.noteime) {
           dau_notes(this.vex_note, this.ytime, this.number_of_bar_note, this.bar_number, this.xblue, this.xblue2);
           console.log("1= " + this.timecount)
+          playnote(this.pleyer_note[this.xblue + 16 * this.bar_number]);
+          // console.log("buffer= " + this.pleyer_note[this.xblue + 16 * this.bar_number] + " ynum= "+ (this.xblue + 16 * this.bar_number) )
           this.timecount = 0;
-          this.xblue = this.xblue + 1;
-          playnote(this.notes_play[this.ytime[this.xblue + 16 * this.bar_number]]);
-          if (this.xblue >= this.number_of_bar_note[this.bar_number]) {
+          this.xblue++;
+          
+          if (this.xblue >= this.number_of_bar_note[this.bar_number])
+          {
             this.xblue--;
             this.bar1_end = true;
           }
         }
         if (this.timecount2 >= (1 / parseInt(this.ytime[this.xblue2 + 16 * (this.bar_number + 4)])) * 240000 / this.noteime) {
           dau_notes(this.vex_note, this.ytime, this.number_of_bar_note, this.bar_number, this.xblue, this.xblue2);
+          playnote(this.pleyer_note[this.xblue2 + 16 * (this.bar_number + 4)]);
           console.log("2= " + this.timecount2)
           this.timecount2 = 0;
           this.xblue2 = this.xblue2 + 1;
@@ -153,14 +190,11 @@ export class NoteBoardComponent implements OnInit {
   }
   generate() {
     this.generate_on = !this.generate_on;
-    playnote('E4');
     if (this.generate_on) {
       this.start_stop = "Stop"
-      playnote('C4');
     }
     else {
       this.start_stop = "Start"
-      playnote('D4');
     }
   }
   vexgenertat() {
@@ -183,13 +217,14 @@ export class NoteBoardComponent implements OnInit {
 
   whit_button_up(button: number) {
     this.w_buttons[button]=0;
+    stopnote();
     single_note_eraser();
+
     this.up_time = performance.now()
     this.total_time = this.up_time - this.down_time
     console.log("white number : " + button + " time= " + this.total_time)
   }
   black_button_down(button: number) {
-    this.playnote2();
     this.b_buttons[button]=1;
     this.down_time = performance.now()
     console.log("black number : " + button)
@@ -204,15 +239,6 @@ export class NoteBoardComponent implements OnInit {
     this.noteime = parseInt(speed.value);
     this.smothness = parseInt(smoth.value);
   }
-  playAudio() {
-    let audio = new Audio();
-    audio.src = "../../../assets/audio/alarm.wav";
-    audio.load();
-    audio.play();
-  }
-  playnote2() {
-    
-  }
    
 }
 
@@ -225,17 +251,27 @@ export class NoteBoardComponent implements OnInit {
 import Vex from 'vexflow';
 const Flow = Vex.Flow;
 const { Renderer, Stave, StaveNote, Voice, Formatter } = Flow;
-var  div, renderer, context,context2,single_stave,single_voice1,piano2
+var  div, renderer, context,context2,single_stave,single_voice1,piano
 var stave1 =new Array()
-function playnote(note: string ) {
-  piano2.play(note)
+
+
+function playnote(note: string ) 
+{
+  // piano2.play(note,ac.currentTime, { duration: 0.5})
+  piano.play(note)
 }
-function init_player(){
-SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano) {
-  piano2=piano
-  // piano.play(note)
-})
+
+
+function stopnote() 
+{
+  piano.stop()
 }
+function init_player()
+{
+  SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano2) {piano=piano2})
+}
+
+
 function dau_init() {
   div = document.getElementById("dau") as HTMLElement;
   renderer = new Renderer(div, Renderer.Backends.SVG);
