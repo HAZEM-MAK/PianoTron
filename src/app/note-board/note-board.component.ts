@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import SoundFont from 'soundfont-player'
-
+var ac = new AudioContext()
 // import {Component,HostListener,Directive,HostBinding,Input} from '@angular/core';
 
 @Component({
@@ -12,9 +12,9 @@ import SoundFont from 'soundfont-player'
 export class NoteBoardComponent implements OnInit {
   note_counter = 24;
   notes = ["A/4", "B/4", "C/4", "D/4", "E/4", "F/4", "G/4", "R/4", "X/4"];
-  notes_play = ["A4", "B4", "C4", "D4", "E4", "F4", "G4", "C5", "X4"];
+  notes_play = ["A4", "B4", "C4", "D4", "E4", "F4", "G4", "C5"];
   notes_time = ["1", "2", "4", "8", "16"];
-
+  
   note_time = [1, 0.5, 0.25, 0.125, 0.0625];
   ytime: string[] = [];
   ytime_num = 0;
@@ -109,7 +109,7 @@ export class NoteBoardComponent implements OnInit {
           console.log("1= " + this.timecount)
           this.timecount = 0;
           this.xblue = this.xblue + 1;
-
+          this.playnote(this.notes_play[this.ytime[this.xblue + 16 * this.bar_number]]);
           if (this.xblue >= this.number_of_bar_note[this.bar_number]) {
             this.xblue--;
             this.bar1_end = true;
@@ -209,10 +209,11 @@ export class NoteBoardComponent implements OnInit {
     audio.play();
   }
   playnote(note: string) {
-    SoundFont.instrument(new AudioContext(), 'acoustic_grand_piano').then(function (piano) {
+    SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano) {
       piano.play(note)
     })
   }
+   
 }
 
 
