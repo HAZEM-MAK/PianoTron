@@ -53,6 +53,7 @@ export class NoteBoardComponent implements OnInit {
 
     dau_init();
     stave_draw();
+    init_player();
     this.rand_generat();
     this.vexgenertat();
 
@@ -109,7 +110,7 @@ export class NoteBoardComponent implements OnInit {
           console.log("1= " + this.timecount)
           this.timecount = 0;
           this.xblue = this.xblue + 1;
-          this.playnote(this.notes_play[this.ytime[this.xblue + 16 * this.bar_number]]);
+          playnote(this.notes_play[this.ytime[this.xblue + 16 * this.bar_number]]);
           if (this.xblue >= this.number_of_bar_note[this.bar_number]) {
             this.xblue--;
             this.bar1_end = true;
@@ -152,14 +153,14 @@ export class NoteBoardComponent implements OnInit {
   }
   generate() {
     this.generate_on = !this.generate_on;
-    this.playnote('E4');
+    playnote('E4');
     if (this.generate_on) {
       this.start_stop = "Stop"
-      this.playnote('C4');
+      playnote('C4');
     }
     else {
       this.start_stop = "Start"
-      this.playnote('D4');
+      playnote('D4');
     }
   }
   vexgenertat() {
@@ -173,7 +174,7 @@ export class NoteBoardComponent implements OnInit {
   whit_button_down(button :number)
   {
     this.w_buttons[button]=1;
-    this.playnote(this.notes_play[button]);
+    playnote(this.notes_play[button]);
     single_note(this.notes[button]);
     this.down_time=performance.now()
     console.log("white number : "+button)
@@ -188,6 +189,7 @@ export class NoteBoardComponent implements OnInit {
     console.log("white number : " + button + " time= " + this.total_time)
   }
   black_button_down(button: number) {
+    this.playnote2();
     this.b_buttons[button]=1;
     this.down_time = performance.now()
     console.log("black number : " + button)
@@ -208,10 +210,8 @@ export class NoteBoardComponent implements OnInit {
     audio.load();
     audio.play();
   }
-  playnote(note: string) {
-    SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano) {
-      piano.play(note)
-    })
+  playnote2() {
+    
   }
    
 }
@@ -225,9 +225,17 @@ export class NoteBoardComponent implements OnInit {
 import Vex from 'vexflow';
 const Flow = Vex.Flow;
 const { Renderer, Stave, StaveNote, Voice, Formatter } = Flow;
-var  div, renderer, context,context2,single_stave,single_voice1
+var  div, renderer, context,context2,single_stave,single_voice1,piano2
 var stave1 =new Array()
-
+function playnote(note: string ) {
+  piano2.play(note)
+}
+function init_player(){
+SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano) {
+  piano2=piano
+  // piano.play(note)
+})
+}
 function dau_init() {
   div = document.getElementById("dau") as HTMLElement;
   renderer = new Renderer(div, Renderer.Backends.SVG);
