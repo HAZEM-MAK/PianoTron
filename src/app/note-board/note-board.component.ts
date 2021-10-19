@@ -116,7 +116,7 @@ export class NoteBoardComponent implements OnInit {
     for (let bar = 0; bar < 8; bar++) {
       this.bar_time = 0;
       for (let index = 0; index < 1000; index++) {
-        this.ytime_num = Math.floor(((4 * 10 * Math.random())) / 9);
+        this.ytime_num = Math.floor(((2 * 10 * Math.random())) / 9);
         if (this.bar_time + this.note_time[this.ytime_num] <= 1) {
           this.bar_time += this.note_time[this.ytime_num];
           this.ytime[this.number_of_bar_note[bar] + bar * 16] = this.notes_time[this.ytime_num];
@@ -140,26 +140,32 @@ export class NoteBoardComponent implements OnInit {
       if (this.generate_on) {
         this.timecount += this.time_res;
         this.timecount2 += this.time_res;
-        if (this.timecount >= ((1 / parseInt(this.ytime[this.xblue + 16 * this.bar_number])) * 240000) / this.noteime) {
-          dau_notes(this.vex_note, this.ytime, this.number_of_bar_note, this.bar_number, this.xblue, this.xblue2);
-          console.log("1= " + this.timecount)
+        dau_notes(this.vex_note, this.ytime, this.number_of_bar_note, this.bar_number, this.xblue, this.xblue2);
+        if (this.timecount >= ((1 / parseInt(this.ytime[this.xblue + 16 * this.bar_number])) * 240000) / this.noteime) 
+        {
+          console.log("1= " + this.xblue)
+         // dau_notes(this.vex_note, this.ytime, this.number_of_bar_note, this.bar_number, this.xblue, this.xblue2);
+          console.log("1= " + this.timecount +"x="+ this.xblue)
           playnote(this.pleyer_note[this.xblue + 16 * this.bar_number]);
           // console.log("buffer= " + this.pleyer_note[this.xblue + 16 * this.bar_number] + " ynum= "+ (this.xblue + 16 * this.bar_number) )
           this.timecount = 0;
           this.xblue++;
-          
+          console.log("1= " + this.xblue)
           if (this.xblue >= this.number_of_bar_note[this.bar_number])
           {
             this.xblue--;
             this.bar1_end = true;
           }
         }
-        if (this.timecount2 >= (1 / parseInt(this.ytime[this.xblue2 + 16 * (this.bar_number + 4)])) * 240000 / this.noteime) {
-          dau_notes(this.vex_note, this.ytime, this.number_of_bar_note, this.bar_number, this.xblue, this.xblue2);
+        if (this.timecount2 >= (1 / parseInt(this.ytime[this.xblue2 + 16 * (this.bar_number + 4)])) * 240000 / this.noteime) 
+        {
+          console.log("2= " + this.xblue2)
+          //dau_notes(this.vex_note, this.ytime, this.number_of_bar_note, this.bar_number, this.xblue, this.xblue2);
           playnote(this.pleyer_note[this.xblue2 + 16 * (this.bar_number + 4)]);
-          console.log("2= " + this.timecount2)
+          console.log("2= " + this.timecount2+"x="+ this.xblue2)
           this.timecount2 = 0;
           this.xblue2 = this.xblue2 + 1;
+          console.log("2= " + this.xblue2);
           if (this.xblue2 >= this.number_of_bar_note[this.bar_number + 4]) {
             this.xblue2--;
             this.bar2_end = true;
@@ -175,7 +181,8 @@ export class NoteBoardComponent implements OnInit {
           this.timecount2 = 0;
           this.timecount = 0;
         }
-        if (this.bar_number > 3) {
+        if (this.bar_number > 3)
+         {
           // this.generate_on=false;
           this.bar2_end = false;
           this.bar1_end = false;
@@ -184,7 +191,7 @@ export class NoteBoardComponent implements OnInit {
           this.bar_number = 0;
           this.bars_generator();
           dau_erase();
-          dau_notes(this.vex_note, this.ytime, this.number_of_bar_note, 0, 0, 0);
+          //dau_notes(this.vex_note, this.ytime, this.number_of_bar_note, 0, 0, 0);
         }
       }
     }, this.time_res)
@@ -316,8 +323,8 @@ function stopnote()
 }
 function init_player()
 {
-  // SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano2) {piano=piano2})
-  SoundFont.instrument(ac, 'acoustic_grand_piano').then(function (piano2) {piano=piano2})
+   SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano2) {piano=piano2})
+ // SoundFont.instrument(ac, 'acoustic_grand_piano').then(function (piano2) {piano=piano2})
 }
 
 
