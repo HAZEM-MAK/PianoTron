@@ -43,6 +43,7 @@ export class NoteBoardComponent implements OnInit {
   boardtime: number = 2000;
   timecount: number = 0;
   timecount2: number = 0;
+  total_time: number=0;
   time_res: number = 50;
   bar_number: number = 0;
   w_buttons: any[] = Array(17);
@@ -50,7 +51,7 @@ export class NoteBoardComponent implements OnInit {
   start_stop: string = "Start"
   down_time: number = 0
   up_time: number = 0
-  total_time: number = 0
+  total_count: number = 0
   note_player_index :number =0
   lock:boolean=false;
   ngOnInit() {
@@ -62,7 +63,7 @@ export class NoteBoardComponent implements OnInit {
     this.vexgenertat();
 
   }
-
+    3350
   constructor() {
     //   for (let index = 0; index < this.note_counter + 1; index++) {
     //     this.ynum[index] = Math.floor(((8 * 10 * Math.random())) / 9);
@@ -138,19 +139,21 @@ export class NoteBoardComponent implements OnInit {
   rand_generat() {
     this.id = setInterval(() => {
       if (this.generate_on) {
+        
         this.timecount += this.time_res;
         this.timecount2 += this.time_res;
+        this.total_count+=this.time_res;
         dau_notes(this.vex_note, this.ytime, this.number_of_bar_note, this.bar_number, this.xblue, this.xblue2);
         if (this.timecount >= ((1 / parseInt(this.ytime[this.xblue + 16 * this.bar_number])) * 240000) / this.noteime) 
         {
-          console.log("1= " + this.xblue)
+         // console.log("1= " + this.xblue)
          // dau_notes(this.vex_note, this.ytime, this.number_of_bar_note, this.bar_number, this.xblue, this.xblue2);
-          console.log("1= " + this.timecount +"x="+ this.xblue)
+          console.log("1= " + this.timecount )
           playnote(this.pleyer_note[this.xblue + 16 * this.bar_number]);
           // console.log("buffer= " + this.pleyer_note[this.xblue + 16 * this.bar_number] + " ynum= "+ (this.xblue + 16 * this.bar_number) )
           this.timecount = 0;
           this.xblue++;
-          console.log("1= " + this.xblue)
+          //console.log("1= " + this.xblue)
           if (this.xblue >= this.number_of_bar_note[this.bar_number])
           {
             this.xblue--;
@@ -159,20 +162,20 @@ export class NoteBoardComponent implements OnInit {
         }
         if (this.timecount2 >= (1 / parseInt(this.ytime[this.xblue2 + 16 * (this.bar_number + 4)])) * 240000 / this.noteime) 
         {
-          console.log("2= " + this.xblue2)
+          //console.log("2= " + this.xblue2)
           //dau_notes(this.vex_note, this.ytime, this.number_of_bar_note, this.bar_number, this.xblue, this.xblue2);
           playnote(this.pleyer_note[this.xblue2 + 16 * (this.bar_number + 4)]);
-          console.log("2= " + this.timecount2+"x="+ this.xblue2)
+          console.log("2= " + this.timecount2)
           this.timecount2 = 0;
           this.xblue2 = this.xblue2 + 1;
-          console.log("2= " + this.xblue2);
+          //console.log("2= " + this.xblue2);
           if (this.xblue2 >= this.number_of_bar_note[this.bar_number + 4]) {
             this.xblue2--;
             this.bar2_end = true;
           }
         }
         if (this.bar2_end && this.bar1_end) {
-          console.log("bar end")
+          //console.log("bar end")
           this.bar_number++;
           this.bar2_end = false;
           this.bar1_end = false;
@@ -189,6 +192,7 @@ export class NoteBoardComponent implements OnInit {
           this.xblue = 0;
           this.xblue2 = 0;
           this.bar_number = 0;
+          this.total_count=0;
           this.bars_generator();
           dau_erase();
           //dau_notes(this.vex_note, this.ytime, this.number_of_bar_note, 0, 0, 0);
@@ -218,7 +222,7 @@ export class NoteBoardComponent implements OnInit {
   {
     this.w_buttons[button]=1;
     playnote(this.notes_play[button]);
-    single_note(this.notes[button]);
+    single_note(this.notes[button],this.total_count);
     this.down_time=performance.now()
     console.log("white number : "+button)
   }
@@ -272,9 +276,10 @@ export class NoteBoardComponent implements OnInit {
 
 
 import Vex from 'vexflow';
+//import { timeStamp } from 'console';
 const Flow = Vex.Flow;
-const { Renderer, Stave, StaveNote, Voice, Formatter } = Flow;
-var  div, renderer, context,context2,single_stave,single_voice1,piano
+const { Renderer, Stave, StaveNote, Voice, Formatter ,TickContext} = Flow;
+var  div, renderer, context,context2,single_stave,single_voice1,piano,tkcontext
 var stave1 =new Array()
 let noteNames: string[] = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
@@ -366,7 +371,7 @@ function dau_erase()
   stave_draw();
 }
 
-function single_note(note:string) {
+function single_note(note:string,time:number) {
 
   // Create an SVG renderer and attach it to the DIV element named "vf".
  
@@ -374,33 +379,39 @@ function single_note(note:string) {
      context2 = renderer.getContext();
       var bar1: Vex.Flow.StaveNote[]=[];
      single_stave = new Stave(20, 40, 300);
+    tkcontext=new TickContext();
     single_stave.addClef("treble").addTimeSignature("4/4");
-    bar1[0]=new StaveNote({ clef: "treble", keys: [note], duration: "1" });
-       
+    bar1[0]=new StaveNote({ clef: "treble", keys: [note], duration: "8" });
+     
 
     bar1[0].setStyle({ fillStyle: "red" });
     
-    
-
-     single_voice1 = [new Voice({ num_beats: bar1.length, beat_value: bar1.length }).addTickables(bar1)];
-   var formatter1 = new Formatter().joinVoices(single_voice1).format(single_voice1, 200);
-   single_voice1.forEach(function (v) { v.draw(context2, single_stave); })
+    single_stave.setContext(context2);
+    bar1[0].setStave(single_stave);
+   // console.log(time*0.06);
+    tkcontext.setX((time*0.06));
+    bar1[0].setTickContext(tkcontext);
+    bar1[0].draw();
+    // single_voice1 = [new Voice({ num_beats: bar1.length, beat_value: bar1.length }).addTickables(bar1)];
+  // var formatter1 = new Formatter().joinVoices(single_voice1).format(single_voice1, 200);
+  // console.log("voise "+single_voice1.getMode()) ; 
+  // single_voice1.forEach(function (v) { v.draw(context2, single_stave); })
   
 }
 
 function single_note_eraser()
 {
   
-  const group = context2.openGroup();
+  // const group = context2.openGroup();
  
-  // Draw your measure as you normally would:
-  single_voice1.forEach(function (v) { v.draw(context2, single_stave); });
+  // // Draw your measure as you normally would:
+  // single_voice1.forEach(function (v) { v.draw(context2, single_stave); });
  
-  // Then close the group:
-  context2.closeGroup();
+  // // Then close the group:
+  // context2.closeGroup();
  
-  // And when you want to delete it, do this:
-  context.svg.removeChild(group); 
+  // // And when you want to delete it, do this:
+  // context.svg.removeChild(group); 
 }
 
 function dau_notes(ynote: string[], ynote_dur: string[], y_num: number[], active_bar: number, blue_note: number, blue_note2: number) {
