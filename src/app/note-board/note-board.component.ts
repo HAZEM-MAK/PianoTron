@@ -328,8 +328,8 @@ function stopnote()
 }
 function init_player()
 {
-   SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano2) {piano=piano2})
- // SoundFont.instrument(ac, 'acoustic_grand_piano').then(function (piano2) {piano=piano2})
+   //SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano2) {piano=piano2})
+  SoundFont.instrument(ac, 'acoustic_grand_piano').then(function (piano2) {piano=piano2})
 }
 
 
