@@ -53,7 +53,9 @@ export class NoteBoardComponent implements OnInit {
   up_time: number = 0
   total_count: number = 0
   note_player_index :number =0
+  single_note_place:number=0;
   lock:boolean=false;
+  press_time:number=0;
   ngOnInit() {
     this.midi_init();
     dau_init();
@@ -117,7 +119,7 @@ export class NoteBoardComponent implements OnInit {
     for (let bar = 0; bar < 8; bar++) {
       this.bar_time = 0;
       for (let index = 0; index < 1000; index++) {
-        this.ytime_num = Math.floor(((2 * 10 * Math.random())) / 9);
+        this.ytime_num = Math.floor(((0 * 10 * Math.random())) / 9);
         if (this.bar_time + this.note_time[this.ytime_num] <= 1) {
           this.bar_time += this.note_time[this.ytime_num];
           this.ytime[this.number_of_bar_note[bar] + bar * 16] = this.notes_time[this.ytime_num];
@@ -148,7 +150,7 @@ export class NoteBoardComponent implements OnInit {
         {
          // console.log("1= " + this.xblue)
          // dau_notes(this.vex_note, this.ytime, this.number_of_bar_note, this.bar_number, this.xblue, this.xblue2);
-          console.log("1= " + this.timecount )
+          console.log("1= " + this.timecount +" total= "+this.total_count);
           playnote(this.pleyer_note[this.xblue + 16 * this.bar_number]);
           // console.log("buffer= " + this.pleyer_note[this.xblue + 16 * this.bar_number] + " ynum= "+ (this.xblue + 16 * this.bar_number) )
           this.timecount = 0;
@@ -222,19 +224,28 @@ export class NoteBoardComponent implements OnInit {
   {
     this.w_buttons[button]=1;
     playnote(this.notes_play[button]);
-    single_note(this.notes[button],this.total_count);
+    this.single_note_place=this.total_count;
+   // single_note(this.notes[button],this.total_count,"1",244.8/((240000)/this.noteime));
     this.down_time=performance.now()
-    console.log("white number : "+button)
   }
 
 
   whit_button_up(button: number) {
+   
     this.w_buttons[button]=0;
     stopnote();
+    
     single_note_eraser();
 
     this.up_time = performance.now()
     this.total_time = this.up_time - this.down_time
+    this.press_time=Math.round(1/((Math.floor(this.total_time)*this.noteime)/240000))
+    console.log(this.press_time.toString())
+    if(this.press_time==1 || this.press_time==2|| this.press_time==4 || this.press_time==8 || this.press_time==16)
+    single_note(this.notes[button],this.single_note_place,this.press_time.toString(),244.8/((240000)/this.noteime));
+    else
+    single_note(this.notes[8],this.single_note_place,"1",244.8/((240000)/this.noteime));
+
     console.log("white number : " + button + " time= " + this.total_time)
   }
   black_button_down(button: number) {
@@ -328,8 +339,8 @@ function stopnote()
 }
 function init_player()
 {
-   //SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano2) {piano=piano2})
-  SoundFont.instrument(ac, 'acoustic_grand_piano').then(function (piano2) {piano=piano2})
+   SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano2) {piano=piano2})
+  //SoundFont.instrument(ac, 'acoustic_grand_piano').then(function (piano2) {piano=piano2})
 }
 
 
@@ -371,7 +382,7 @@ function dau_erase()
   stave_draw();
 }
 
-function single_note(note:string,time:number) {
+function single_note(note:string,time:number,du:string,pos:number) {
 
   // Create an SVG renderer and attach it to the DIV element named "vf".
  
@@ -381,7 +392,7 @@ function single_note(note:string,time:number) {
      single_stave = new Stave(20, 40, 300);
     tkcontext=new TickContext();
     single_stave.addClef("treble").addTimeSignature("4/4");
-    bar1[0]=new StaveNote({ clef: "treble", keys: [note], duration: "8" });
+    bar1[0]=new StaveNote({ clef: "treble", keys: [note], duration: du });
      
 
     bar1[0].setStyle({ fillStyle: "red" });
@@ -389,7 +400,7 @@ function single_note(note:string,time:number) {
     single_stave.setContext(context2);
     bar1[0].setStave(single_stave);
    // console.log(time*0.06);
-    tkcontext.setX((time*0.06));
+    tkcontext.setX((time*pos));
     bar1[0].setTickContext(tkcontext);
     bar1[0].draw();
     // single_voice1 = [new Voice({ num_beats: bar1.length, beat_value: bar1.length }).addTickables(bar1)];
