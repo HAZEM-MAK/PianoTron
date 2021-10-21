@@ -119,7 +119,7 @@ export class NoteBoardComponent implements OnInit {
     for (let bar = 0; bar < 8; bar++) {
       this.bar_time = 0;
       for (let index = 0; index < 1000; index++) {
-        this.ytime_num = Math.floor(((0 * 10 * Math.random())) / 9);
+        this.ytime_num = Math.floor(((4 * 10 * Math.random())) / 9);
         if (this.bar_time + this.note_time[this.ytime_num] <= 1) {
           this.bar_time += this.note_time[this.ytime_num];
           this.ytime[this.number_of_bar_note[bar] + bar * 16] = this.notes_time[this.ytime_num];
@@ -339,8 +339,8 @@ function stopnote()
 }
 function init_player()
 {
-   SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano2) {piano=piano2})
-  //SoundFont.instrument(ac, 'acoustic_grand_piano').then(function (piano2) {piano=piano2})
+   //SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano2) {piano=piano2})
+  SoundFont.instrument(ac, 'acoustic_grand_piano').then(function (piano2) {piano=piano2})
 }
 
 
