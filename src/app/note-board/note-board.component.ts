@@ -1,6 +1,8 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import SoundFont from 'soundfont-player'
 import {inputById, MIDI_INPUT, MIDI_OUTPUT, MIDI_SUPPORT, outputByName, SYSEX} from '@ng-web-apis/midi';
+import { RandomArraysHolderService } from "../random-arrays-holder.service";
+import { Subscription } from 'rxjs';
 
 var ac = new AudioContext()
 // import {Component,HostListener,Directive,HostBinding,Input} from '@angular/core';
@@ -26,13 +28,13 @@ export class NoteBoardComponent implements OnInit {
                 "A3", "B3", "C3", "D3", "E3", "F3", "G3",
                 "A2", "B2", "C2", "D2", "E2", "F2", "G2"
               ];//the strings that represent notes on soundfont library
-  notes_time = ["1", "2", "4", "8", "16"];    //the strings that represent nots duiration on vexflow library
-  note_time = [1, 0.5, 0.25, 0.125, 0.0625];  //the real note duiration used for calculate the bar time in randomation 
+  // notes_time = ["1", "2", "4", "8", "16"];    //the strings that represent nots duiration on vexflow library
+  // note_time = [1, 0.5, 0.25, 0.125, 0.0625];  //the real note duiration used for calculate the bar time in randomation 
 
   ytime: string[] = []; //conitain every note duiration after the randomation  
-  ytime_num = 0; //time index 
+  // ytime_num = 0; //time index 
 
-  bar_time = 0; //the bar time used for calculation
+  // bar_time = 0; //the bar time used for calculation
 
   number_of_bar_note: number[] = [0, 0, 0, 0, 0, 0, 0, 0]; //how many notse in every bar
   vex_note: string[] = []; //the strings that represent notes on vexflow  library after randomation 
@@ -41,7 +43,7 @@ export class NoteBoardComponent implements OnInit {
   xblue = 0; //the note that is been played index on the first staves
   xblue2 = 0;//the note that is been played index on the sacond staves
 
-  ynum: number[] = []; //randumation buffer
+  // ynum: number[] = []; //randumation buffer
   generate_on: boolean = false; //to start randomation process
 
   bar1_end = false;//ture  when all bar notes in the first stave were played
@@ -74,7 +76,7 @@ export class NoteBoardComponent implements OnInit {
   single_note_place:number=0; //it say what he is represent for -_-
   lock:boolean=false;// keyboard pressing lock
  
-  
+  subscription: Subscription;
   
   ngOnInit() {
     this.midi_init();
@@ -85,8 +87,11 @@ export class NoteBoardComponent implements OnInit {
     this.vexgenertat();
 
   }
-  constructor() {
-  
+  constructor(private data: RandomArraysHolderService) {
+    this.subscription = this.data.currentMessage1.subscribe(vex_note => this.vex_note = vex_note)
+    this.subscription = this.data.currentMessage2.subscribe(pleyer_note => this.pleyer_note = pleyer_note)
+    this.subscription = this.data.currentMessage3.subscribe(ytime => this.ytime = ytime)
+    this.subscription = this.data.currentMessage4.subscribe(number_of_bar_note => this.number_of_bar_note = number_of_bar_note)
   }
   @HostListener('window:keydown', ['$event'])//an event called when any keyborde key pressed
   keyEvent(event: KeyboardEvent) {
@@ -123,42 +128,50 @@ export class NoteBoardComponent implements OnInit {
     }
     console.log(event.key);
   }
-  bars_generator() //fill the arrays with random patren of notes
+  get_rendom_data()
   {
-    //intitalis the array to null valus
-    this.vex_note = Array(128).fill(null);
-    this.number_of_bar_note = Array(8).fill(null);
-    this.ytime = Array(128).fill(null);
-    
-    for (let bar = 0; bar < 8; bar++) //scaning 8 bars 4 on the first line and 4 on the second
-    {
-      this.bar_time = 0; 
-      //notes time generat
-      for (let index = 0; index < 1000; index++)//randomation process. that is limited by 1000 try, to fit with tha rimaining bar time  
-      {
-        this.ytime_num = Math.floor((((this.notes_time.length-1) * 9 * Math.random())) / 9);//generat random number from 0 to this.notes_time.length-1  that represent the note time [1,0.5,0.25,0.125.0.0625]
-        if (this.bar_time + this.note_time[this.ytime_num] <= 1)
-        {
-          this.bar_time += this.note_time[this.ytime_num];
-          this.ytime[this.number_of_bar_note[bar] + bar * 16] = this.notes_time[this.ytime_num];
-          this.number_of_bar_note[bar]++;
-          if (this.bar_time == 1) //break the randomation loop whe complete the bar time to 1
-            break;
-        }
-      }
-      //note value generat
-      for (let index = 0; index < this.number_of_bar_note[bar]; index++) //scanning every note time that generat on the last step
-      {
-        do 
-        {
-          this.ynum[index] = Math.floor((((this.notes.length-1) * 9 * Math.random())) / 9);//generat random number from 0 to this.notes.length-1 that represent the note value[a,b,c,d,e,f,g]
-        }
-        while (Math.abs(this.ynum[index] - this.ynum[index - 1]) > this.smothness)//accept the value if it fit wiith the requierd smothness
-        this.vex_note[index + bar * 16] = this.notes[this.ynum[index]];
-        this.pleyer_note[index + bar * 16] = this.notes_play[this.ynum[index]];
-      }
-    }
+    this.subscription = this.data.currentMessage1.subscribe(vex_note => this.vex_note = vex_note)
+    this.subscription = this.data.currentMessage2.subscribe(pleyer_note => this.pleyer_note = pleyer_note)
+    this.subscription = this.data.currentMessage3.subscribe(ytime => this.ytime = ytime)
+    this.subscription = this.data.currentMessage4.subscribe(number_of_bar_note => this.number_of_bar_note = number_of_bar_note)
+
   }
+  // bars_generator() //fill the arrays with random patren of notes
+  // {
+  //   //intitalis the array to null valus
+  //   this.vex_note = Array(128).fill(null);
+  //   this.number_of_bar_note = Array(8).fill(null);
+  //   this.ytime = Array(128).fill(null);
+    
+  //   for (let bar = 0; bar < 8; bar++) //scaning 8 bars 4 on the first line and 4 on the second
+  //   {
+  //     this.bar_time = 0; 
+  //     //notes time generat
+  //     for (let index = 0; index < 1000; index++)//randomation process. that is limited by 1000 try, to fit with tha rimaining bar time  
+  //     {
+  //       this.ytime_num = Math.floor((((this.notes_time.length-1) * 9 * Math.random())) / 9);//generat random number from 0 to this.notes_time.length-1  that represent the note time [1,0.5,0.25,0.125.0.0625]
+  //       if (this.bar_time + this.note_time[this.ytime_num] <= 1)
+  //       {
+  //         this.bar_time += this.note_time[this.ytime_num];
+  //         this.ytime[this.number_of_bar_note[bar] + bar * 16] = this.notes_time[this.ytime_num];
+  //         this.number_of_bar_note[bar]++;
+  //         if (this.bar_time == 1) //break the randomation loop whe complete the bar time to 1
+  //           break;
+  //       }
+  //     }
+  //     //note value generat
+  //     for (let index = 0; index < this.number_of_bar_note[bar]; index++) //scanning every note time that generat on the last step
+  //     {
+  //       do 
+  //       {
+  //         this.ynum[index] = Math.floor((((this.notes.length-1) * 9 * Math.random())) / 9);//generat random number from 0 to this.notes.length-1 that represent the note value[a,b,c,d,e,f,g]
+  //       }
+  //       while (Math.abs(this.ynum[index] - this.ynum[index - 1]) > this.smothness)//accept the value if it fit wiith the requierd smothness
+  //       this.vex_note[index + bar * 16] = this.notes[this.ynum[index]];
+  //       this.pleyer_note[index + bar * 16] = this.notes_play[this.ynum[index]];
+  //     }
+  //   }
+  // }
   rand_generat()
    {
     this.id = setInterval(() => 
@@ -214,7 +227,7 @@ export class NoteBoardComponent implements OnInit {
           this.xblue2 = 0;
           this.bar_number = 0;
           this.total_count=0;
-          this.bars_generator();
+          // this.bars_generator();
           draw_erase();
         }
       }
@@ -233,7 +246,7 @@ export class NoteBoardComponent implements OnInit {
   }
   vexgenertat() //generat the first bars on first lunch
   {
-    this.bars_generator();
+    // this.bars_generator();
     draw_notes(this.vex_note, this.ytime, this.number_of_bar_note, 0, 0, 0);
   }
   whit_button_down(button :number)
