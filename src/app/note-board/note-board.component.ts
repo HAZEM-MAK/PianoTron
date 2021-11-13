@@ -351,8 +351,8 @@ function stopnote()
 }
 function init_player()
 {
-   SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano2) {piano=piano2})// play the note from local asset
-  //SoundFont.instrument(ac, 'acoustic_grand_piano').then(function (piano2) {piano=piano2}) // play the note from internet library
+  // SoundFont.instrument(ac, '../../assets/soundfont_piano.js').then(function (piano2) {piano=piano2})// play the note from local asset
+  SoundFont.instrument(ac, 'acoustic_grand_piano').then(function (piano2) {piano=piano2}) // play the note from internet library
 }
 function draw_init() {
   div = document.getElementById("dau") as HTMLElement;
