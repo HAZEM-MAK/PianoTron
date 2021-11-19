@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class RandomArraysHolderService {
+export class RandomNoteGeneratorService {
 
   vex_note: string[] = []; //the strings that represent notes on vexflow  library after randomation 
   pleyer_note: string[] = [];//the strings that represent notes on soundfont library after randomation 

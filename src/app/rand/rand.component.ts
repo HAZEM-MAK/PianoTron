@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RandomArraysHolderService } from "../random-arrays-holder.service";
+import { RandomNoteGeneratorService } from "../random-note-generator.service";
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -35,7 +35,7 @@ ytime: string[] = []; //conitain every note duiration after the randomation
 number_of_bar_note: number[] = [0, 0, 0, 0, 0, 0, 0, 0]; //how many notse in every bar
 
 smothness: number = 5;// the smothenss of the notes
-constructor(private data: RandomArraysHolderService) {
+constructor(private data: RandomNoteGeneratorService) {
 
   this.bars_generator();
   this.data.changeMessage(this.vex_note,this.pleyer_note,this.ytime,this.number_of_bar_note)
@@ -48,9 +48,9 @@ ngOnInit()
   bars_generator() //fill the arrays with random patren of notes
   {
     //intitalis the array to null valus
-    this.vex_note = Array(128).fill(null);
-    this.number_of_bar_note = Array(8).fill(null);
-    this.ytime = Array(128).fill(null);
+    this.vex_note = new Array(128).fill(null);
+    this.number_of_bar_note = new Array(8).fill(null);
+    this.ytime = new Array(128).fill(null);
     
     for (let bar = 0; bar < 8; bar++) //scaning 8 bars 4 on the first line and 4 on the second
     {
