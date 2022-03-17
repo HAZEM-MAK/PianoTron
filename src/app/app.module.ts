@@ -2,8 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { RandComponent } from './rand/rand.component';
 import { NoteBoardComponent } from './note-board/note-board.component';
+import { HomeComponent } from './home/home.component';
 //import { MatSliderModule } from '@angular/material/slider';
 //import { FormsModule } from '@angular/forms';
 
@@ -11,8 +11,8 @@ import { NoteBoardComponent } from './note-board/note-board.component';
   declarations: [
 
     AppComponent,
-    RandComponent,
-    NoteBoardComponent
+    NoteBoardComponent,
+    HomeComponent
   ],
   imports: [
     //FormsModule,
@@ -21,6 +21,9 @@ import { NoteBoardComponent } from './note-board/note-board.component';
     AppRoutingModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    HomeComponent
+  ]
 })
 export class AppModule { }

@@ -83,6 +83,12 @@ export class NoteBoardComponent implements OnInit {
   stave1 = new Array()
   noteNames: string[] = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
+  notes_time = ["1", "2", "4", "8", "16"];    //the strings that represent nots duiration on vexflow library
+  note_time = [1, 0.5, 0.25, 0.125, 0.0625];  //the real note duiration used for calculate the bar time in randomation 
+  ytime_num = 0; //time index 
+  bar_time = 0; //the bar time used for calculation
+  ynum: number[] = []; //randumation buffer
+
   onMidiMessage(midiEvent: WebMidi.MIDIMessageEvent): void {
 
     let data: Uint8Array = midiEvent.data;
@@ -212,7 +218,7 @@ export class NoteBoardComponent implements OnInit {
 
     for (let bar = 0; bar < 8; bar++) {
       console.log('YNUM: ', bar, y_num[bar]);
-      
+
       for (let index = 0; index < y_num[bar]; index++) {
         const clef = bar < 4 ? 'bass' : "treble";
         dau_stave[bar][index] = new Vex.Flow.StaveNote({
@@ -339,9 +345,10 @@ export class NoteBoardComponent implements OnInit {
     this.init_player();
     this.rand_generat();
     this.vexgenertat();
+    this.data.changeMessage(this.vex_note, this.pleyer_note, this.ytime, this.number_of_bar_note)
 
   }
-  constructor(private data: RandomNoteGeneratorService) {
+  constructor(private data: RandomNoteGeneratorService,) {
     this.data.currentMessage1.pipe(takeUntil(this.destroyed)).subscribe(vex_note => this.vex_note = vex_note)
     this.data.currentMessage2.pipe(takeUntil(this.destroyed)).subscribe(pleyer_note => this.pleyer_note = pleyer_note)
     this.data.currentMessage3.pipe(takeUntil(this.destroyed)).subscribe(ytime => this.ytime = ytime)
@@ -382,6 +389,40 @@ export class NoteBoardComponent implements OnInit {
     this.data.currentMessage3.pipe(takeUntil(this.destroyed)).subscribe(ytime => this.ytime = ytime)
     this.data.currentMessage4.pipe(takeUntil(this.destroyed)).subscribe(number_of_bar_note => this.number_of_bar_note = number_of_bar_note)
 
+  }
+  bars_generator() //fill the arrays with random patren of notes
+  {
+    //intitalis the array to null valus
+    this.vex_note = new Array(128).fill(null);
+    this.number_of_bar_note = new Array(8).fill(null);
+    this.ytime = new Array(128).fill(null);
+
+    for (let bar = 0; bar < 8; bar++) //scaning 8 bars 4 on the first line and 4 on the second
+    {
+      this.bar_time = 0;
+      //notes time generat
+      for (let index = 0; index < 1000; index++)//randomation process. that is limited by 1000 try, to fit with tha rimaining bar time  
+      {
+        this.ytime_num = Math.floor((((this.notes_time.length - 1) * 9 * Math.random())) / 9);//generat random number from 0 to this.notes_time.length-1  that represent the note time [1,0.5,0.25,0.125.0.0625]
+        if (this.bar_time + this.note_time[this.ytime_num] <= 1) {
+          this.bar_time += this.note_time[this.ytime_num];
+          this.ytime[this.number_of_bar_note[bar] + bar * 16] = this.notes_time[this.ytime_num];
+          this.number_of_bar_note[bar]++;
+          if (this.bar_time == 1) //break the randomation loop whe complete the bar time to 1
+            break;
+        }
+      }
+      //note value generat
+      for (let index = 0; index < this.number_of_bar_note[bar]; index++) //scanning every note time that generat on the last step
+      {
+        do {
+          this.ynum[index] = Math.floor((((notes.length - 1) * 9 * Math.random())) / 9);//generat random number from 0 to this.notes.length-1 that represent the note value[a,b,c,d,e,f,g]
+        }
+        while (Math.abs(this.ynum[index] - this.ynum[index - 1]) > this.smothness)//accept the value if it fit wiith the requierd smothness
+        this.vex_note[index + bar * 16] = notes[this.ynum[index]];
+        this.pleyer_note[index + bar * 16] = notes_play[this.ynum[index]];
+      }
+    }
   }
   // bars_generator() //fill the arrays with random patren of notes
   // {

@@ -17,6 +17,7 @@ export const notes = [
     "A/3", "B/3", "C/3", "D/3", "E/3", "F/3", "G/3",
     "A/2", "B/2", "C/2", "D/2", "E/2", "F/2", "G/2",
 ];  //the strings that represent notes on vexflow library
+
 export const notes_play = [
     "A6", "B6", "C6", "D6", "E6", "F6", "G6",
     "A5", "B5", "C5", "D5", "E5", "F5", "G5",
