@@ -1,0 +1,7 @@
+<button class="{{class}} {{(mode | async) == true ? 'on' : 'off'}}" (mousedown)="mode.next" (mouseup)="mode.next(false)"
+    style="width: 60px;height: 200px;border-radius: 12px;"></button>
+
+
+<!-- <button [ngClass]="{'white' : !w_buttons[i], 'gray': w_buttons[i]}" 
+[ngStyle]="{'position':'absolute','top':325+'px','left':30+(60*i)+'px'}" (mousedown)="whit_button_down(i)" (mouseup)="whit_button_up(i)" style="width: 60px;height: 200px;border-radius: 12px;"  ></button>
+</div> -->

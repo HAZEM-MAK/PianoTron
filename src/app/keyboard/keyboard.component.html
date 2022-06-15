@@ -1,0 +1,11 @@
+<app-keyboard-button *ngFor="let b of buttons" [name]="b" (playing)="toggleNote(b, $event)"></app-keyboard-button>
+
+<!-- <div  *ngFor="let val of w_buttons ; let i = index"  >
+    <button [ngClass]="{'white' : !w_buttons[i], 'gray': w_buttons[i]}" 
+    [ngStyle]="{'position':'absolute','top':325+'px','left':30+(60*i)+'px'}" (mousedown)="whit_button_down(i)" (mouseup)="whit_button_up(i)" style="width: 60px;height: 200px;border-radius: 12px;"  ></button>
+</div>
+<div *ngFor="let val of b_buttons ; let v = index"  >
+    <div *ngIf="v==0 || v==2 || v==3 || v==5 || v==6 || v==7 || v==9 || v==10 || v==12 || v==13 || v==14">
+        <button [ngClass]="{'black' : !b_buttons[v], 'lightblack': b_buttons[v]}"  [ngStyle]="{'position':'absolute','top':325+'px','left':70+(60*v)+'px'}" (mousedown)="black_button_down(v)" (mouseup)="black_button_up(v)" style="width: 40px;height: 120px;border-radius: 10px;"  ></button>
+    </div> 
+</div> -->

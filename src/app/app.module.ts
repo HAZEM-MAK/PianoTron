@@ -4,6 +4,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NoteBoardComponent } from './note-board/note-board.component';
 import { HomeComponent } from './home/home.component';
+import { KeyboardComponent } from './keyboard/keyboard.component';
+import { KeyboardButtonComponent } from './keyboard-button/keyboard-button.component';
 //import { MatSliderModule } from '@angular/material/slider';
 //import { FormsModule } from '@angular/forms';
 
@@ -12,7 +14,9 @@ import { HomeComponent } from './home/home.component';
 
     AppComponent,
     NoteBoardComponent,
-    HomeComponent
+    HomeComponent,
+    KeyboardComponent,
+    KeyboardButtonComponent
   ],
   imports: [
     //FormsModule,
